@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+chan isPumping, finishedPumping, high, low, reqMeasure;
+
+bool tankIsFull = false;
+int[0, 100] waterlevel;
+int[0,2] ErrStat;</declaration>
+	<template>
+		<name x="5" y="5">Tank</name>
+		<declaration>// Place local declarations here.
+
+double waterlevel = 49.0;</declaration>
+		<location id="id0" x="-1326" y="-485">
+			<name x="-1411" y="-493">Measure</name>
+		</location>
+		<location id="id1" x="-1062" y="-485">
+			<name x="-1087" y="-519">Ready</name>
+		</location>
+		<location id="id2" x="-1326" y="-357">
+			<name x="-1351" y="-340">Unready</name>
+		</location>
+		<location id="id3" x="-858" y="-484">
+			<name x="-892" y="-518">Overfilled</name>
+		</location>
+		<location id="id4" x="-1061" y="-357">
+			<name x="-1087" y="-340">Draining</name>
+		</location>
+		<location id="id5" x="-1394" y="-425">
+			<name x="-1453" y="-434">Filling</name>
+		</location>
+		<location id="id6" x="-1394" y="-544">
+			<name x="-1404" y="-578">Initial</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-1249" y="-459">finishedPumping?</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id0"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id0"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-1054" y="-425">isPumping?</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-1020" y="-518">waterlevel&gt;90</label>
+			<label kind="assignment" x="-1003" y="-501">ErrStat:=1</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-1326" y="-425">waterlevel&lt;50</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-1258" y="-535">waterlevel&gt;50</label>
+			<label kind="synchronisation" x="-1249" y="-518">reqMeasure!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Garden</name>
+		<declaration>
+double moisture;</declaration>
+		<location id="id7" x="-765" y="-425">
+			<name x="-756" y="-450">Measure</name>
+		</location>
+		<location id="id8" x="-459" y="-425">
+			<name x="-469" y="-459">Fault</name>
+		</location>
+		<location id="id9" x="-799" y="-518">
+			<name x="-809" y="-552">initial</name>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-952" y="-493">moisture&gt;40 &amp;&amp;
+moisture&lt;99</label>
+			<nail x="-824" y="-484"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-918" y="-365">moisture&lt;40</label>
+			<label kind="synchronisation" x="-892" y="-348">isPumping!</label>
+			<nail x="-790" y="-331"/>
+			<nail x="-850" y="-391"/>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-782" y="-488">reqMeasure?</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-629" y="-468">moisture&gt;99</label>
+			<label kind="assignment" x="-621" y="-451">ErrStat:=2</label>
+		</transition>
+	</template>
+	<system>system Tank, Garden;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
