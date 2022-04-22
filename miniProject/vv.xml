@@ -3,13 +3,12 @@
 <nta>
 	<declaration>// Place global declarations here.
 
-chan isPumping, finishedPumping, high, low, reqMeasure;
+chan isPumping, finishedPumping, reqMeasure;
 chan check_water_level, filling, draining, check_moisture;
 chan done_checking_moisture;
 
 bool enough_water = false;
 
-int[0, 100] waterlevel;
 int[0,2] ErrStat;</declaration>
 	<template>
 		<name x="5" y="5">Distance_Sensor</name>
@@ -58,13 +57,11 @@ double waterlevel;
 		<transition>
 			<source ref="id0"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-1895" y="-416">enough_water = false</label>
 		</transition>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="synchronisation" x="-1793" y="-578">check_water_level!</label>
-			<label kind="assignment" x="-1802" y="-561">enough_water = true</label>
 		</transition>
 	</template>
 	<template>
@@ -121,8 +118,8 @@ double moisture;
 		<transition>
 			<source ref="id10"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="-1938" y="-1445">filling?</label>
-			<label kind="assignment" x="-1946" y="-1411">enough_water = true</label>
+			<label kind="synchronisation" x="-1895" y="-1436">filling?</label>
+			<label kind="assignment" x="-1946" y="-1419">enough_water = true</label>
 			<nail x="-1802" y="-1419"/>
 		</transition>
 		<transition>
@@ -133,13 +130,14 @@ double moisture;
 		<transition>
 			<source ref="id8"/>
 			<target ref="id10"/>
-			<label kind="synchronisation" x="-1717" y="-1419">check_water_level?</label>
+			<label kind="synchronisation" x="-1717" y="-1436">check_water_level?</label>
+			<label kind="assignment" x="-1717" y="-1419">enough_water = false</label>
 			<nail x="-1725" y="-1428"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id9"/>
-			<label kind="synchronisation" x="-1725" y="-1521">check_water_level?</label>
+			<label kind="synchronisation" x="-1700" y="-1538">check_water_level?</label>
 			<nail x="-1725" y="-1530"/>
 		</transition>
 	</template>
