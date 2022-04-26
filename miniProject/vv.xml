@@ -130,13 +130,13 @@ double moisture = 100.0;
 		<transition>
 			<source ref="id7"/>
 			<target ref="id8"/>
-			<label kind="assignment" x="-399" y="-102">moisture_level=55</label>
+			<label kind="assignment" x="-399" y="-102">moisture_level=45</label>
 			<nail x="-263" y="-102"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id7"/>
-			<label kind="assignment" x="-195" y="-102">moisture_level=45</label>
+			<label kind="assignment" x="-195" y="-102">moisture_level=55</label>
 			<nail x="-204" y="-102"/>
 		</transition>
 	</template>
