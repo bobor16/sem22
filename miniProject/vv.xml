@@ -66,7 +66,7 @@ int[0,2] ErrStat;</declaration>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id2"/>
-			<label kind="guard" x="-1768" y="-348">water_level &lt;= 50 &amp;&amp;
+			<label kind="guard" x="-1768" y="-340">water_level &lt;= 50 &amp;&amp;
 water_level &gt;= 0</label>
 			<label kind="synchronisation" x="-1768" y="-365">check_water_level!</label>
 		</transition>
@@ -81,7 +81,7 @@ water_level &lt;= 100</label>
 	<template>
 		<name>Soil_Sensor</name>
 		<declaration>
-double moisture = 100.0;
+int moisture = 100;
 </declaration>
 		<location id="id4" x="-1292" y="-1368">
 			<name x="-1302" y="-1402">Fault</name>
@@ -275,7 +275,43 @@ system Tank_One, Display_Garden_One,  Display_Tank_One, Moisture_Sensor, Ultraso
 </system>
 	<queries>
 		<query>
-			<formula></formula>
+			<formula>A[](1 &gt; 0)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Measure</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Ready</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Unready</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Moisture_Sensor.Measure</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Ready imply Tank_One.Above_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Ready imply not Tank_One.Below_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Unready imply !Tank_One.Above_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Unready imply Tank_One.Below_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Ready and Garden.Dry imply Garden.Moist)</formula>
 			<comment></comment>
 		</query>
 	</queries>
