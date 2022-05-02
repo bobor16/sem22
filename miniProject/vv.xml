@@ -276,8 +276,60 @@ moisture_level &lt;= 100</label>
 			<nail x="-943" y="-391"/>
 		</transition>
 		<transition>
+			<source ref="id11"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-850" y="-399">update_moisture!</label>
+			<nail x="-739" y="-357"/>
+			<nail x="-739" y="-425"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-1037" y="-195">update_moisture!</label>
+			<nail x="-926" y="-153"/>
+			<nail x="-926" y="-212"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-850" y="59">update_moisture!</label>
+			<nail x="-739" y="102"/>
+			<nail x="-739" y="25"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-790" y="-127">moisture_level &gt;30 &amp;&amp;
+moisture_level &lt;= 50</label>
+			<label kind="synchronisation" x="-790" y="-144">measure_soil?</label>
+			<nail x="-680" y="-144"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-722" y="-221">soil_medium!</label>
+			<nail x="-688" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id10"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-569" y="-357">soil_moist!</label>
+			<nail x="-569" y="-340"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-578" y="34">soil_dry!</label>
+			<nail x="-569" y="25"/>
+		</transition>
+		<transition>
 			<source ref="id13"/>
 			<target ref="id11"/>
+
 			<label kind="guard" x="-1148" y="-723">moisture_level &gt;31 &amp;&amp;
 moisture_level &lt;= 50</label>
 			<label kind="synchronisation" x="-1148" y="-740">soil_medium!</label>
@@ -359,7 +411,7 @@ system Tank_One, Microcontroller, Garden_One;
 			<comment></comment>
 		</query>
 		<query>
-			<formula></formula>
+			<formula>A[] (Ultrasonic_Sensor.Ready and Garden.Dry imply Garden.Moist)</formula>
 			<comment></comment>
 		</query>
 	</queries>
