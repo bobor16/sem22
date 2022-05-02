@@ -65,15 +65,7 @@ int moisture = 100;
 		</location>
 		<init ref="id4"/>
 		<transition>
-			<source ref="id3"/>
-			<target ref="id4"/>
-			<label kind="assignment" x="-399" y="-102">moisture_level=55</label>
-			<nail x="-263" y="-102"/>
-		</transition>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id3"/>
-			<label kind="assignment" x="-195" y="-102">moisture_level=45</label>
+
 			<nail x="-204" y="-102"/>
 		</transition>
 	</template>
