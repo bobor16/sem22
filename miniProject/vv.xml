@@ -95,20 +95,20 @@ water_level = 101</label>
 	</template>
 	<template>
 		<name>Garden</name>
-		<location id="id5" x="-162" y="-187">
-			<name x="-172" y="-221">Error</name>
+		<location id="id5" x="-93" y="-187">
+			<name x="-103" y="-221">Error</name>
 		</location>
-		<location id="id6" x="-654" y="-391">
-			<name x="-671" y="-425">Moist</name>
+		<location id="id6" x="-858" y="-374">
+			<name x="-901" y="-416">Moisture_High</name>
 		</location>
-		<location id="id7" x="-654" y="59">
-			<name x="-671" y="25">Dry</name>
+		<location id="id7" x="-850" y="51">
+			<name x="-892" y="0">Moisture_Low</name>
 		</location>
 		<location id="id8" x="-459" y="-187">
-			<name x="-459" y="-255">Measure_Moisture_Level</name>
+			<name x="-442" y="-263">Measure_Moisture_Level</name>
 		</location>
 		<location id="id9" x="-858" y="-178">
-			<name x="-884" y="-212">Less_Dry</name>
+			<name x="-986" y="-246">Moisture_Medium</name>
 		</location>
 		<init ref="id8"/>
 		<transition>
@@ -121,73 +121,73 @@ water_level = 101</label>
 		<transition>
 			<source ref="id6"/>
 			<target ref="id6"/>
-			<label kind="synchronisation" x="-850" y="-399">update_moisture!</label>
-			<nail x="-722" y="-357"/>
-			<nail x="-722" y="-425"/>
+			<label kind="synchronisation" x="-1054" y="-382">update_moisture!</label>
+			<nail x="-926" y="-340"/>
+			<nail x="-926" y="-408"/>
 		</transition>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id9"/>
-			<label kind="synchronisation" x="-1054" y="-195">update_moisture!</label>
-			<nail x="-926" y="-153"/>
-			<nail x="-926" y="-212"/>
+			<label kind="synchronisation" x="-1054" y="-187">update_moisture!</label>
+			<nail x="-926" y="-144"/>
+			<nail x="-926" y="-221"/>
 		</transition>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id7"/>
-			<label kind="synchronisation" x="-850" y="59">update_moisture!</label>
-			<nail x="-722" y="102"/>
-			<nail x="-722" y="25"/>
+			<label kind="synchronisation" x="-1046" y="51">update_moisture!</label>
+			<nail x="-918" y="94"/>
+			<nail x="-918" y="17"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id9"/>
-			<label kind="guard" x="-773" y="-127">moisture_level &gt;31 &amp;&amp;
+			<label kind="guard" x="-765" y="-161">moisture_level &gt;31 &amp;&amp;
 moisture_level &lt;= 50</label>
-			<label kind="synchronisation" x="-773" y="-144">measure_soil?</label>
-			<nail x="-680" y="-144"/>
+			<label kind="synchronisation" x="-765" y="-178">measure_soil?</label>
+			<nail x="-858" y="-42"/>
 		</transition>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="-731" y="-221">soil_medium?</label>
-			<label kind="assignment" x="-731" y="-204">moisture_level += 5</label>
-			<nail x="-688" y="-238"/>
+			<label kind="synchronisation" x="-748" y="-246">soil_medium?</label>
+			<label kind="assignment" x="-748" y="-229">moisture_level += 5</label>
+			<nail x="-858" y="-314"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id5"/>
-			<label kind="guard" x="-382" y="-221">moisture_level &gt; 100 ||
+			<label kind="guard" x="-323" y="-178">moisture_level &gt; 100 ||
 moisture_level &lt; 0</label>
 		</transition>
 		<transition>
 			<source ref="id6"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="-527" y="-365">soil_moist?</label>
-			<label kind="assignment" x="-527" y="-348">moisture_level += 5</label>
-			<nail x="-552" y="-340"/>
+			<label kind="synchronisation" x="-671" y="-425">soil_moist?</label>
+			<label kind="assignment" x="-671" y="-408">moisture_level += 5</label>
+			<nail x="-458" y="-374"/>
 		</transition>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id8"/>
-			<label kind="synchronisation" x="-527" y="-25">soil_dry?</label>
-			<label kind="assignment" x="-527" y="-8">moisture_level += 5</label>
-			<nail x="-552" y="25"/>
+			<label kind="synchronisation" x="-620" y="-68">soil_dry?</label>
+			<label kind="assignment" x="-654" y="-51">moisture_level += 5</label>
+			<nail x="-756" y="-8"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id6"/>
-			<label kind="guard" x="-765" y="-297">moisture_level &gt;51 &amp;&amp;
+			<label kind="guard" x="-671" y="-323">moisture_level &gt;51 &amp;&amp;
 moisture_level &lt;= 100</label>
-			<label kind="synchronisation" x="-765" y="-314">measure_soil?</label>
-			<nail x="-603" y="-297"/>
+			<label kind="synchronisation" x="-671" y="-340">measure_soil?</label>
+			<nail x="-654" y="-280"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id7"/>
-			<label kind="guard" x="-773" y="-34">moisture_level &lt;= 31</label>
-			<label kind="synchronisation" x="-773" y="-51">measure_soil?</label>
-			<nail x="-620" y="-25"/>
+			<label kind="guard" x="-671" y="76">moisture_level &lt;= 31</label>
+			<label kind="synchronisation" x="-671" y="59">measure_soil?</label>
+			<nail x="-459" y="51"/>
 		</transition>
 	</template>
 	<template>
