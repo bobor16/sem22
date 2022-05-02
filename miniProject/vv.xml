@@ -3,187 +3,361 @@
 <nta>
 	<declaration>// Place global declarations here.
 
-chan isPumping, finishedPumping, high, low, reqMeasure;
-chan check_water_level, filling, draining, check_moisture;
-chan done_checking_moisture;
+chan soil_moist, soil_medium, soil_dry, measure_soil;
+chan measure_tank, filled, filling, is_pumping, update_water_level;
+chan update_tank_display, update_garden_display, update_moisture;
+chan alarm, reset, test;
 
-bool enough_water = false;
+//bool enough_water = false;
 
-int[0, 100] waterlevel;
+clock time;
+int water_level;
+int waterState;
+
+//int water_level;
+int moisture_level;
+
 int[0,2] ErrStat;</declaration>
 	<template>
-		<name x="5" y="5">Distance_Sensor</name>
-		<declaration>// Place local declarations here.
+		<name>Tank</name>
+		<declaration>
 
-double waterlevel;
+clock timer;
+
 
 </declaration>
-		<location id="id0" x="-1853" y="-536">
-			<name x="-1938" y="-544">Measure</name>
+		<location id="id0" x="-1062" y="-1105">
+			<name x="-1072" y="-1139">Error</name>
 		</location>
-		<location id="id1" x="-1589" y="-536">
-			<name x="-1614" y="-570">Ready</name>
+		<location id="id1" x="-1725" y="-935">
+			<name x="-1793" y="-918">Not_Enough_Water</name>
 		</location>
-		<location id="id2" x="-1912" y="-382">
-			<name x="-1937" y="-365">Unready</name>
+		<location id="id2" x="-1725" y="-1224">
+			<name x="-1776" y="-1258">Enough_Water</name>
 		</location>
-		<location id="id3" x="-1385" y="-535">
-			<name x="-1419" y="-569">Overfilled</name>
+		<location id="id3" x="-1402" y="-1104">
+			<name x="-1393" y="-1130">Measure_Water_Level</name>
 		</location>
-		<location id="id4" x="-1921" y="-595">
-			<name x="-1931" y="-629">Initial</name>
+		<location id="id4" x="-1649" y="-1105">
+			<name x="-1640" y="-1156">Pumping</name>
+			<label kind="invariant" x="-1640" y="-1139">timer &lt; 5</label>
 		</location>
-		<init ref="id4"/>
+		<init ref="id3"/>
 		<transition>
-			<source ref="id1"/>
-			<target ref="id0"/>
-			<label kind="synchronisation" x="-1632" y="-484">draining!</label>
-			<nail x="-1700" y="-450"/>
-		</transition>
-		<transition>
-			<source ref="id2"/>
-			<target ref="id0"/>
-			<label kind="synchronisation" x="-1997" y="-484">filling!</label>
-			<nail x="-1946" y="-467"/>
+			<source ref="id3"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-1470" y="-1020">update_tank_display?</label>
+			<nail x="-1360" y="-1028"/>
+			<nail x="-1436" y="-1028"/>
 		</transition>
 		<transition>
 			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="-1631" y="-1104">water_level -= 5</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-1776" y="-1165">is_pumping?</label>
+			<label kind="assignment" x="-1776" y="-1147">timer := 0</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
 			<target ref="id0"/>
+			<label kind="guard" x="-1283" y="-1054">water_level &gt; 100 ||
+water_level &lt; 0</label>
+			<label kind="synchronisation" x="-1283" y="-1105">alarm!</label>
+			<label kind="assignment" x="-1283" y="-1088">ErrStat:=1,
+water_level = 101</label>
 		</transition>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id3"/>
-			<label kind="assignment" x="-1530" y="-569">ErrStat:=1</label>
+			<label kind="synchronisation" x="-1802" y="-1054">filled?</label>
+			<label kind="assignment" x="-1836" y="-1037">water_level = 10</label>
+			<nail x="-1649" y="-1045"/>
 		</transition>
 		<transition>
-			<source ref="id0"/>
+			<source ref="id3"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-1895" y="-416">enough_water = false</label>
+			<label kind="guard" x="-1589" y="-1224">water_level &gt;= 5</label>
+			<label kind="synchronisation" x="-1453" y="-1164">measure_tank?</label>
+			<nail x="-1504" y="-1198"/>
 		</transition>
 		<transition>
-			<source ref="id0"/>
+			<source ref="id3"/>
 			<target ref="id1"/>
-			<label kind="synchronisation" x="-1793" y="-578">check_water_level!</label>
-			<label kind="assignment" x="-1802" y="-561">enough_water = true</label>
+			<label kind="guard" x="-1564" y="-952">water_level&lt;5</label>
+			<label kind="synchronisation" x="-1564" y="-969">measure_tank?</label>
+			<nail x="-1615" y="-943"/>
 		</transition>
 	</template>
 	<template>
-		<name>Soil_Sensor</name>
-		<declaration>
-double moisture;
-</declaration>
-		<location id="id5" x="-1266" y="-1147">
-			<name x="-1257" y="-1172">Measure</name>
+		<name>Garden</name>
+		<location id="id5" x="-162" y="-187">
+			<name x="-172" y="-221">Error</name>
 		</location>
-		<location id="id6" x="-1300" y="-1240">
-			<name x="-1310" y="-1274">initial</name>
+		<location id="id6" x="-654" y="-391">
+			<name x="-671" y="-425">Moist</name>
 		</location>
-		<init ref="id6"/>
+		<location id="id7" x="-654" y="59">
+			<name x="-671" y="25">Dry</name>
+		</location>
+		<location id="id8" x="-459" y="-187">
+			<name x="-459" y="-255">Measure_Moisture_Level</name>
+		</location>
+		<location id="id9" x="-858" y="-178">
+			<name x="-884" y="-212">Less_Dry</name>
+		</location>
+		<init ref="id8"/>
 		<transition>
-			<source ref="id5"/>
-			<target ref="id6"/>
-			<label kind="synchronisation" x="-1504" y="-1207">done_checking_moisture!</label>
-			<nail x="-1325" y="-1206"/>
-		</transition>
-		<transition>
-			<source ref="id5"/>
-			<target ref="id5"/>
-			<label kind="synchronisation" x="-1275" y="-1079">check_moisture!</label>
-			<nail x="-1291" y="-1053"/>
-			<nail x="-1351" y="-1113"/>
+			<source ref="id8"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-425" y="-93">update_garden_display?</label>
+			<nail x="-348" y="-136"/>
+			<nail x="-442" y="-85"/>
 		</transition>
 		<transition>
 			<source ref="id6"/>
-			<target ref="id5"/>
-		</transition>
-	</template>
-	<template>
-		<name>Tank</name>
-		<location id="id7" x="-1657" y="-1666">
-			<name x="-1667" y="-1700">Overfilled</name>
-		</location>
-		<location id="id8" x="-1768" y="-1479">
-			<name x="-1819" y="-1487">Idle</name>
-		</location>
-		<location id="id9" x="-1768" y="-1581">
-			<name x="-1912" y="-1589">Above_Threshold</name>
-		</location>
-		<location id="id10" x="-1768" y="-1368">
-			<name x="-1912" y="-1377">Below_Threshold</name>
-		</location>
-		<init ref="id10"/>
-		<transition>
-			<source ref="id9"/>
-			<target ref="id8"/>
-			<label kind="synchronisation" x="-1938" y="-1538">draining?</label>
-			<nail x="-1802" y="-1530"/>
-		</transition>
-		<transition>
-			<source ref="id10"/>
-			<target ref="id8"/>
-			<label kind="synchronisation" x="-1938" y="-1445">filling?</label>
-			<label kind="assignment" x="-1946" y="-1411">enough_water = true</label>
-			<nail x="-1802" y="-1419"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-850" y="-399">update_moisture!</label>
+			<nail x="-722" y="-357"/>
+			<nail x="-722" y="-425"/>
 		</transition>
 		<transition>
 			<source ref="id9"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-1054" y="-195">update_moisture!</label>
+			<nail x="-926" y="-153"/>
+			<nail x="-926" y="-212"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
 			<target ref="id7"/>
-			<label kind="assignment" x="-1750" y="-1623">ErrStat:=1</label>
-		</transition>
-		<transition>
-			<source ref="id8"/>
-			<target ref="id10"/>
-			<label kind="synchronisation" x="-1717" y="-1419">check_water_level?</label>
-			<nail x="-1725" y="-1428"/>
+			<label kind="synchronisation" x="-850" y="59">update_moisture!</label>
+			<nail x="-722" y="102"/>
+			<nail x="-722" y="25"/>
 		</transition>
 		<transition>
 			<source ref="id8"/>
 			<target ref="id9"/>
-			<label kind="synchronisation" x="-1725" y="-1521">check_water_level?</label>
-			<nail x="-1725" y="-1530"/>
-		</transition>
-	</template>
-	<template>
-		<name>Display</name>
-		<location id="id11" x="-442" y="-34">
-			<name x="-484" y="-17">Water_Level</name>
-		</location>
-		<location id="id12" x="-552" y="-34">
-			<name x="-586" y="-17">Moisture</name>
-		</location>
-		<location id="id13" x="-501" y="-119">
-			<name x="-511" y="-153">Initial</name>
-		</location>
-		<init ref="id13"/>
-		<transition>
-			<source ref="id13"/>
-			<target ref="id11"/>
-			<label kind="synchronisation" x="-471" y="-93">check_water_level?</label>
+			<label kind="guard" x="-773" y="-127">moisture_level &gt;31 &amp;&amp;
+moisture_level &lt;= 50</label>
+			<label kind="synchronisation" x="-773" y="-144">measure_soil?</label>
+			<nail x="-680" y="-144"/>
 		</transition>
 		<transition>
-			<source ref="id13"/>
-			<target ref="id12"/>
-			<label kind="synchronisation" x="-654" y="-93">check_moisture?</label>
+			<source ref="id9"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-731" y="-221">soil_medium?</label>
+			<label kind="assignment" x="-731" y="-204">moisture_level += 5</label>
+			<nail x="-688" y="-238"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-382" y="-221">moisture_level &gt; 100 ||
+moisture_level &lt; 0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-527" y="-365">soil_moist?</label>
+			<label kind="assignment" x="-527" y="-348">moisture_level += 5</label>
+			<nail x="-552" y="-340"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-527" y="-25">soil_dry?</label>
+			<label kind="assignment" x="-527" y="-8">moisture_level += 5</label>
+			<nail x="-552" y="25"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-765" y="-297">moisture_level &gt;51 &amp;&amp;
+moisture_level &lt;= 100</label>
+			<label kind="synchronisation" x="-765" y="-314">measure_soil?</label>
+			<nail x="-603" y="-297"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-773" y="-34">moisture_level &lt;= 31</label>
+			<label kind="synchronisation" x="-773" y="-51">measure_soil?</label>
+			<nail x="-620" y="-25"/>
 		</transition>
 	</template>
 	<template>
 		<name>Microcontroller</name>
-		<location id="id14" x="0" y="0">
+		<declaration>clock timer;</declaration>
+		<location id="id10" x="-1487" y="-391">
+			<name x="-1538" y="-374">Soil_State_Moist</name>
 		</location>
-		<init ref="id14"/>
+		<location id="id11" x="-1487" y="-578">
+			<name x="-1547" y="-561">Soil_State_Medium</name>
+		</location>
+		<location id="id12" x="-1487" y="-731">
+			<name x="-1538" y="-714">Soil_State_Dry</name>
+		</location>
+		<location id="id13" x="-1360" y="-943">
+			<name x="-1437" y="-935">Garden</name>
+			<label kind="invariant" x="-1437" y="-918">timer &lt; 5</label>
+		</location>
+		<location id="id14" x="-2057" y="-867">
+			<name x="-2142" y="-909">Water_Tank</name>
+			<label kind="invariant" x="-2133" y="-892">timer &lt; 5</label>
+		</location>
+		<location id="id15" x="-1692" y="-943">
+			<name x="-1683" y="-969">Idle</name>
+		</location>
+		<location id="id16" x="-1640" y="-578">
+			<name x="-1734" y="-569">Soil_Display</name>
+		</location>
+		<location id="id17" x="-1870" y="-867">
+			<name x="-1853" y="-876">Water_Display</name>
+		</location>
+		<location id="id18" x="-2142" y="-578">
+		</location>
+		<init ref="id15"/>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-2252" y="-731">measure_tank!</label>
+			<nail x="-2142" y="-867"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-2031" y="-595">update_garden_display!</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-2023" y="-807">is_pumping!</label>
+			<nail x="-2031" y="-790"/>
+			<nail x="-1870" y="-790"/>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-1861" y="-960">update_tank_display!</label>
+			<nail x="-1853" y="-943"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-1997" y="-960">filled!</label>
+			<nail x="-2031" y="-943"/>
+			<nail x="-1870" y="-943"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id16"/>
+			<nail x="-1640" y="-731"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id16"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id16"/>
+			<nail x="-1640" y="-391"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-926" y="-723">moisture_level &gt;51 &amp;&amp;
+moisture_level &lt;= 100</label>
+			<label kind="synchronisation" x="-875" y="-740">soil_moist!</label>
+			<nail x="-944" y="-943"/>
+			<nail x="-943" y="-391"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-1148" y="-723">moisture_level &gt;31 &amp;&amp;
+moisture_level &lt;= 50</label>
+			<label kind="synchronisation" x="-1148" y="-740">soil_medium!</label>
+			<nail x="-1157" y="-926"/>
+			<nail x="-1156" y="-578"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-1351" y="-723">moisture_level &lt;= 31</label>
+			<label kind="synchronisation" x="-1351" y="-740">soil_dry!</label>
+			<nail x="-1360" y="-731"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-1539" y="-977">measure_soil!</label>
+			<label kind="assignment" x="-1539" y="-960">timer := 0</label>
+			<nail x="-1488" y="-943"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<nail x="-2057" y="-1020"/>
+			<nail x="-1691" y="-1020"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-1929" y="-731">measure_tank!</label>
+			<label kind="assignment" x="-1929" y="-714">timer := 0</label>
+			<nail x="-1691" y="-731"/>
+			<nail x="-2057" y="-731"/>
+		</transition>
 	</template>
 	<system>// Place template instantiations here.
 Tank_One = Tank();
-Moisture_Sensor = Soil_Sensor();
-Ultrasonic_Sensor = Distance_Sensor(); 
-Display_One = Display();
-Display_Two = Display();
 Esp32_One = Microcontroller();
+Garden_One = Garden();
 
 // List one or more processes to be composed into a system.
-system Tank_One, Moisture_Sensor, Ultrasonic_Sensor, Display, Microcontroller;
+system Tank_One, Microcontroller, Garden_One;
 </system>
 	<queries>
+		<query>
+			<formula>A[](1 &gt; 0)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Measure</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Ready</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Ultrasonic_Sensor.Unready</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Moisture_Sensor.Measure</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Ready imply Tank_One.Above_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Ready imply not Tank_One.Below_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Unready imply !Tank_One.Above_Limit)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (Ultrasonic_Sensor.Unready imply Tank_One.Below_Limit)</formula>
+			<comment></comment>
+		</query>
 		<query>
 			<formula></formula>
 			<comment></comment>
