@@ -5,7 +5,7 @@
 
 chan is_pumping, finishedPumping, reqMeasure, update_water_level, update_moisture;
 chan check_water_level, filling, draining, check_moisture, filled;
-chan done_checking_moisture, alarm, reset, run, stop;
+chan done_checking_moisture, alarm, reset, run, stop, measure;
 
 //bool enough_water = false;
 
@@ -166,7 +166,7 @@ int moisture = 100;
 	</template>
 	<template>
 		<name>Tank</name>
-		<declaration>chan test;</declaration>
+		<declaration>int water_level = 0;</declaration>
 		<location id="id11" x="-952" y="-663">
 			<name x="-962" y="-697">Error</name>
 		</location>
@@ -177,7 +177,7 @@ int moisture = 100;
 			<name x="-1496" y="-790">Enough_Water</name>
 		</location>
 		<location id="id14" x="-1122" y="-662">
-			<name x="-1132" y="-696">Measure</name>
+			<name x="-1113" y="-688">Measure</name>
 		</location>
 		<init ref="id14"/>
 		<transition>
@@ -210,12 +210,14 @@ water_level &lt; 0</label>
 			<source ref="id14"/>
 			<target ref="id13"/>
 			<label kind="guard" x="-1309" y="-756">water_level &gt; 50</label>
+			<label kind="synchronisation" x="-1181" y="-722">measure?</label>
 			<nail x="-1224" y="-730"/>
 		</transition>
 		<transition>
 			<source ref="id14"/>
 			<target ref="id12"/>
 			<label kind="guard" x="-1309" y="-594">water_level&lt;=50</label>
+			<label kind="synchronisation" x="-1181" y="-629">measure?</label>
 			<nail x="-1224" y="-603"/>
 		</transition>
 	</template>
@@ -309,10 +311,17 @@ water_level &lt; 0</label>
 	</template>
 	<template>
 		<name>Microcontroller</name>
-		<location id="id23" x="-960" y="-739">
+		<location id="id23" x="-1105" y="-739">
+		</location>
+		<location id="id24" x="-960" y="-739">
 			<name x="-970" y="-773">Idle</name>
 		</location>
-		<init ref="id23"/>
+		<init ref="id24"/>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="-1087" y="-756">measure!</label>
+		</transition>
 	</template>
 	<system>// Place template instantiations here.
 Tank_One = Tank();
