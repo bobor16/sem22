@@ -44,168 +44,121 @@ int[0,2] ErrStat;
 </declaration>
 	<template>
 		<name>MasterController</name>
-		<declaration>clock timer;</declaration>
-		<location id="id0" x="-1819" y="-212">
+		<declaration>clock timer;
+
+int ui_moisture_level;</declaration>
+		<location id="id0" x="-1105" y="-212">
+			<name x="-1115" y="-246">Update_UI</name>
+		</location>
+		<location id="id1" x="-1819" y="-212">
 			<name x="-1862" y="-221">Idle</name>
 		</location>
-		<location id="id1" x="-1513" y="-374">
+		<location id="id2" x="-1513" y="-374">
 		</location>
-		<location id="id2" x="-1513" y="-212">
+		<location id="id3" x="-1513" y="-212">
 		</location>
-		<location id="id3" x="-1513" y="-59">
+		<location id="id4" x="-1513" y="-59">
 		</location>
-		<location id="id4" x="-1181" y="-212">
-			<name x="-1215" y="-246">Updating_UI</name>
+		<location id="id5" x="-1207" y="-212">
+			<name x="-1267" y="-246">Sending_Request</name>
 		</location>
-		<location id="id5" x="-1181" y="0">
-		</location>
-		<branchpoint id="id6" x="-1275" y="-212">
-		</branchpoint>
-		<init ref="id0"/>
+		<init ref="id1"/>
 		<transition>
-			<source ref="id6"/>
-			<target ref="id4"/>
+			<source ref="id4"/>
+			<target ref="id0"/>
+			<nail x="-1105" y="-59"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<nail x="-1062" y="-212"/>
+			<nail x="-1063" y="0"/>
+			<nail x="-1819" y="0"/>
 		</transition>
 		<transition>
 			<source ref="id5"/>
 			<target ref="id0"/>
-			<nail x="-1368" y="0"/>
-			<nail x="-1819" y="0"/>
-		</transition>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id5"/>
-		</transition>
-		<transition>
-			<source ref="id3"/>
-			<target ref="id6"/>
-			<nail x="-1275" y="-59"/>
 		</transition>
 		<transition>
 			<source ref="id2"/>
-			<target ref="id6"/>
+			<target ref="id5"/>
+			<nail x="-1317" y="-374"/>
+			<nail x="-1317" y="-212"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id5"/>
 		</transition>
 		<transition>
 			<source ref="id1"/>
-			<target ref="id6"/>
-			<nail x="-1275" y="-374"/>
-		</transition>
-		<transition>
-			<source ref="id0"/>
-			<target ref="id3"/>
+			<target ref="id4"/>
 			<label kind="synchronisation" x="-1691" y="-85">request_no_watering!</label>
 			<nail x="-1742" y="-212"/>
 			<nail x="-1742" y="-59"/>
 		</transition>
 		<transition>
-			<source ref="id0"/>
-			<target ref="id1"/>
+			<source ref="id1"/>
+			<target ref="id2"/>
 			<label kind="synchronisation" x="-1700" y="-399">request_high_watering!</label>
 			<nail x="-1742" y="-212"/>
 			<nail x="-1742" y="-374"/>
 		</transition>
 		<transition>
-			<source ref="id0"/>
-			<target ref="id2"/>
+			<source ref="id1"/>
+			<target ref="id3"/>
 			<label kind="synchronisation" x="-1700" y="-238">request_low_watering!</label>
-		</transition>
-	</template>
-	<template>
-		<name>PumpController</name>
-		<declaration>clock timer;</declaration>
-		<location id="id7" x="-67" y="-161">
-			<name x="-126" y="-204">Water_Tank_Level</name>
-			<label kind="invariant" x="-110" y="-119">timer&gt;=5 &amp;&amp; timer&lt;10</label>
-		</location>
-		<location id="id8" x="-67" y="213">
-			<name x="-110" y="179">UpdateWaterLevel</name>
-		</location>
-		<location id="id9" x="221" y="-161">
-			<name x="230" y="-187">Idle</name>
-		</location>
-		<init ref="id9"/>
-		<transition>
-			<source ref="id8"/>
-			<target ref="id9"/>
-			<label kind="synchronisation" x="77" y="221">update_tank_display!</label>
-			<nail x="220" y="213"/>
-		</transition>
-		<transition>
-			<source ref="id7"/>
-			<target ref="id8"/>
-			<label kind="synchronisation" x="-450" y="26">is_pumping!</label>
-			<nail x="-348" y="-153"/>
-			<nail x="-348" y="213"/>
-		</transition>
-		<transition>
-			<source ref="id7"/>
-			<target ref="id8"/>
-			<label kind="synchronisation" x="-67" y="9">remain_idle!</label>
-		</transition>
-		<transition>
-			<source ref="id7"/>
-			<target ref="id8"/>
-			<label kind="synchronisation" x="-220" y="26">filled!</label>
-			<nail x="-229" y="-119"/>
-			<nail x="-229" y="162"/>
-		</transition>
-		<transition>
-			<source ref="id9"/>
-			<target ref="id7"/>
-			<label kind="synchronisation" x="42" y="-204">measure_tank!</label>
-			<label kind="assignment" x="42" y="-187">timer := 0</label>
 		</transition>
 	</template>
 	<template>
 		<name>Tank</name>
 		<declaration>clock sensorTimer, pumpingTimer;
 </declaration>
-		<location id="id10" x="-1844" y="-1164">
+		<location id="id6" x="-1844" y="-1164">
 			<name x="-1854" y="-1198">Error</name>
 		</location>
-		<location id="id11" x="-2703" y="-833">
+		<location id="id7" x="-2703" y="-833">
 			<name x="-2771" y="-816">Not_Enough_Water</name>
 		</location>
-		<location id="id12" x="-2686" y="-1283">
+		<location id="id8" x="-2686" y="-1283">
 			<name x="-2737" y="-1317">Enough_Water</name>
 		</location>
-		<location id="id13" x="-2286" y="-1156">
+		<location id="id9" x="-2286" y="-1156">
 			<name x="-2278" y="-1139">Measure_Water_Level</name>
 		</location>
-		<location id="id14" x="-2686" y="-1147">
+		<location id="id10" x="-2686" y="-1147">
 			<name x="-2720" y="-1130">Pumping</name>
 		</location>
-		<location id="id15" x="-1989" y="-1309">
+		<location id="id11" x="-1989" y="-1309">
 			<name x="-1999" y="-1343">InitialState</name>
 		</location>
-		<location id="id16" x="-2694" y="-1003">
+		<location id="id12" x="-2694" y="-1003">
 			<name x="-2704" y="-1037">Filling</name>
 		</location>
-		<init ref="id15"/>
+		<init ref="id11"/>
 		<transition>
-			<source ref="id16"/>
-			<target ref="id13"/>
+			<source ref="id12"/>
+			<target ref="id9"/>
 		</transition>
 		<transition>
-			<source ref="id15"/>
-			<target ref="id13"/>
+			<source ref="id11"/>
+			<target ref="id9"/>
 			<label kind="synchronisation" x="-2167" y="-1249">measure_tank?</label>
 			<label kind="assignment" x="-2167" y="-1232">water_level=100</label>
 		</transition>
 		<transition>
-			<source ref="id14"/>
-			<target ref="id13"/>
+			<source ref="id10"/>
+			<target ref="id9"/>
 			<label kind="assignment" x="-2558" y="-1147">water_level -= 5</label>
 		</transition>
 		<transition>
-			<source ref="id12"/>
-			<target ref="id14"/>
+			<source ref="id8"/>
+			<target ref="id10"/>
 			<label kind="synchronisation" x="-2660" y="-1249">is_pumping?</label>
 			<label kind="assignment" x="-2660" y="-1232">pumpingTimer := 0</label>
 		</transition>
 		<transition>
-			<source ref="id13"/>
-			<target ref="id10"/>
+			<source ref="id9"/>
+			<target ref="id6"/>
 			<label kind="guard" x="-2005" y="-1113">water_level &gt; 100 ||
 water_level &lt; 0</label>
 			<label kind="synchronisation" x="-2005" y="-1164">alarm!</label>
@@ -213,59 +166,111 @@ water_level &lt; 0</label>
 water_level = 101</label>
 		</transition>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id16"/>
+			<source ref="id7"/>
+			<target ref="id12"/>
 			<label kind="synchronisation" x="-2592" y="-1003">filled?</label>
 			<label kind="assignment" x="-2592" y="-986">water_level = 10</label>
 			<nail x="-2694" y="-977"/>
 		</transition>
 		<transition>
-			<source ref="id13"/>
-			<target ref="id12"/>
+			<source ref="id9"/>
+			<target ref="id8"/>
 			<label kind="guard" x="-2533" y="-1309">water_level &gt;= 5 &amp;&amp; water_level &lt;=100</label>
 			<nail x="-2287" y="-1284"/>
 		</transition>
 		<transition>
-			<source ref="id13"/>
-			<target ref="id11"/>
+			<source ref="id9"/>
+			<target ref="id7"/>
 			<label kind="guard" x="-2388" y="-824">water_level&lt;5</label>
 			<nail x="-2286" y="-832"/>
+		</transition>
+	</template>
+	<template>
+		<name>PumpController</name>
+		<declaration>clock timer;</declaration>
+		<location id="id13" x="-67" y="-161">
+			<name x="-126" y="-204">Water_Tank_Level</name>
+			<label kind="invariant" x="-110" y="-119">timer&gt;=5 &amp;&amp; timer&lt;10</label>
+		</location>
+		<location id="id14" x="-67" y="213">
+			<name x="-110" y="179">UpdateWaterLevel</name>
+		</location>
+		<location id="id15" x="221" y="-161">
+			<name x="230" y="-187">Idle</name>
+		</location>
+		<init ref="id15"/>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="77" y="221">update_tank_display!</label>
+			<nail x="220" y="213"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-450" y="26">is_pumping!</label>
+			<nail x="-348" y="-153"/>
+			<nail x="-348" y="213"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-67" y="9">remain_idle!</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="synchronisation" x="-220" y="26">filled!</label>
+			<nail x="-229" y="-119"/>
+			<nail x="-229" y="162"/>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="42" y="-204">measure_tank!</label>
+			<label kind="assignment" x="42" y="-187">timer := 0</label>
 		</transition>
 	</template>
 	<template>
 		<name>Garden</name>
 		<declaration>// TODO: Maybe refactor the Garden into being the "gatekeeper" of errors / States
 //     Because then the two different gardens could have different "Thresholds/MoistureHighLowLevels" etc. </declaration>
-		<location id="id17" x="-408" y="-459">
+		<location id="id16" x="-408" y="-459">
 			<name x="-418" y="-493">Error</name>
 		</location>
-		<location id="id18" x="-552" y="-246">
-			<name x="-527" y="-254">Moisture_High</name>
+		<location id="id17" x="-306" y="-391">
+			<name x="-281" y="-399">Moisture_High</name>
 		</location>
-		<location id="id19" x="-1054" y="-246">
+		<location id="id18" x="-1054" y="-246">
 			<name x="-1028" y="-254">Moisture_Low</name>
 		</location>
-		<location id="id20" x="-816" y="-459">
+		<location id="id19" x="-816" y="-459">
 			<name x="-807" y="-433">Measuring_Moisture_Level</name>
 		</location>
-		<location id="id21" x="-816" y="-246">
+		<location id="id20" x="-816" y="-246">
 			<name x="-790" y="-255">Moisture_Medium</name>
 		</location>
-		<location id="id22" x="-816" y="-110">
+		<location id="id21" x="-816" y="-110">
 			<name x="-799" y="-102">GettingWater</name>
 		</location>
-		<location id="id23" x="-816" y="-569">
+		<location id="id22" x="-816" y="-569">
 			<name x="-850" y="-612">InitialState</name>
 		</location>
-		<init ref="id23"/>
+		<init ref="id22"/>
 		<transition>
-			<source ref="id23"/>
-			<target ref="id20"/>
-			<label kind="synchronisation" x="-807" y="-527">measure_soil?</label>
+			<source ref="id17"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="-612" y="-595">no_water_request?</label>
+			<nail x="-306" y="-569"/>
 		</transition>
 		<transition>
 			<source ref="id22"/>
-			<target ref="id20"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-807" y="-527">measure_soil?</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id19"/>
 			<label kind="synchronisation" x="-918" y="-59">measure_soil?</label>
 			<label kind="assignment" x="-943" y="-42">moisture_level+=5</label>
 			<nail x="-816" y="-17"/>
@@ -273,43 +278,37 @@ water_level = 101</label>
 			<nail x="-1130" y="-459"/>
 		</transition>
 		<transition>
-			<source ref="id18"/>
-			<target ref="id22"/>
-			<label kind="synchronisation" x="-544" y="-153">no_water_request?</label>
-			<nail x="-552" y="-110"/>
-		</transition>
-		<transition>
-			<source ref="id21"/>
-			<target ref="id22"/>
+			<source ref="id20"/>
+			<target ref="id21"/>
 			<label kind="synchronisation" x="-807" y="-152">low_water_request?</label>
 		</transition>
 		<transition>
-			<source ref="id19"/>
-			<target ref="id22"/>
+			<source ref="id18"/>
+			<target ref="id21"/>
 			<label kind="synchronisation" x="-1045" y="-152">high_water_request?</label>
 			<nail x="-1054" y="-110"/>
 		</transition>
 		<transition>
-			<source ref="id20"/>
-			<target ref="id21"/>
+			<source ref="id19"/>
+			<target ref="id20"/>
 			<label kind="synchronisation" x="-807" y="-348">soil_medium?</label>
 			<nail x="-816" y="-391"/>
 		</transition>
 		<transition>
-			<source ref="id20"/>
-			<target ref="id17"/>
+			<source ref="id19"/>
+			<target ref="id16"/>
 			<label kind="guard" x="-739" y="-484">moisture_level &gt; 100 || moisture_level &lt; 0</label>
 		</transition>
 		<transition>
-			<source ref="id20"/>
-			<target ref="id18"/>
-			<label kind="synchronisation" x="-544" y="-348">soil_moist?</label>
+			<source ref="id19"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-595" y="-382">soil_moist?</label>
 			<nail x="-816" y="-391"/>
-			<nail x="-552" y="-391"/>
+			<nail x="-654" y="-391"/>
 		</transition>
 		<transition>
-			<source ref="id20"/>
-			<target ref="id19"/>
+			<source ref="id19"/>
+			<target ref="id18"/>
 			<label kind="synchronisation" x="-1045" y="-348">soil_dry?</label>
 			<nail x="-816" y="-391"/>
 			<nail x="-1054" y="-391"/>
@@ -318,86 +317,86 @@ water_level = 101</label>
 	<template>
 		<name>MoistureController</name>
 		<declaration>clock timer;</declaration>
-		<location id="id24" x="-1360" y="-943">
+		<location id="id23" x="-1360" y="-943">
 			<name x="-1437" y="-1003">Measuring_Garden_Level</name>
 			<label kind="invariant" x="-1387" y="-986">timer &lt; 5</label>
 		</location>
-		<location id="id25" x="-1700" y="-943">
+		<location id="id24" x="-1700" y="-943">
 			<name x="-1743" y="-952">Idle</name>
 		</location>
-		<location id="id26" x="-1360" y="-527">
+		<location id="id25" x="-1360" y="-527">
 			<name x="-1343" y="-535">UpdatedMoistureLevel</name>
 		</location>
-		<location id="id27" x="-969" y="-943">
+		<location id="id26" x="-969" y="-943">
 			<name x="-952" y="-951">ErrorState</name>
 		</location>
-		<location id="id28" x="-1130" y="-799">
+		<location id="id27" x="-1130" y="-799">
 			<name x="-1113" y="-807">Moist</name>
 		</location>
-		<location id="id29" x="-1572" y="-799">
+		<location id="id28" x="-1572" y="-799">
 			<name x="-1555" y="-807">Dry</name>
 		</location>
-		<location id="id30" x="-1360" y="-799">
+		<location id="id29" x="-1360" y="-799">
 			<name x="-1343" y="-807">Medium</name>
 		</location>
-		<location id="id31" x="-1572" y="-654">
+		<location id="id30" x="-1572" y="-654">
 			<name x="-1555" y="-663">RequestHighWatering</name>
 		</location>
-		<location id="id32" x="-1360" y="-654">
+		<location id="id31" x="-1360" y="-654">
 			<name x="-1343" y="-663">RequestLowWattering</name>
 		</location>
-		<location id="id33" x="-1130" y="-654">
+		<location id="id32" x="-1130" y="-654">
 			<name x="-1113" y="-663">RequestNoWatering</name>
 		</location>
-		<init ref="id25"/>
+		<init ref="id24"/>
 		<transition>
-			<source ref="id32"/>
-			<target ref="id26"/>
+			<source ref="id27"/>
+			<target ref="id32"/>
+			<label kind="synchronisation" x="-1122" y="-739">no_water_request!</label>
+		</transition>
+		<transition>
+			<source ref="id31"/>
+			<target ref="id25"/>
 			<label kind="synchronisation" x="-1351" y="-595">request_low_watering?</label>
 		</transition>
 		<transition>
-			<source ref="id33"/>
-			<target ref="id26"/>
+			<source ref="id32"/>
+			<target ref="id25"/>
 			<label kind="synchronisation" x="-1122" y="-595">request_no_watering?</label>
 			<nail x="-1130" y="-569"/>
 			<nail x="-1360" y="-569"/>
 		</transition>
 		<transition>
-			<source ref="id31"/>
-			<target ref="id26"/>
+			<source ref="id30"/>
+			<target ref="id25"/>
 			<label kind="synchronisation" x="-1564" y="-595">request_high_watering?</label>
 			<nail x="-1572" y="-569"/>
 			<nail x="-1360" y="-569"/>
 		</transition>
 		<transition>
-			<source ref="id29"/>
-			<target ref="id31"/>
+			<source ref="id28"/>
+			<target ref="id30"/>
 			<label kind="synchronisation" x="-1564" y="-739">high_water_request!</label>
 		</transition>
 		<transition>
-			<source ref="id30"/>
-			<target ref="id32"/>
+			<source ref="id29"/>
+			<target ref="id31"/>
 			<label kind="synchronisation" x="-1351" y="-739">low_water_request!</label>
 		</transition>
 		<transition>
-			<source ref="id28"/>
-			<target ref="id33"/>
-			<label kind="synchronisation" x="-1122" y="-739">no_water_request!</label>
-		</transition>
-		<transition>
-			<source ref="id24"/>
-			<target ref="id27"/>
+			<source ref="id23"/>
+			<target ref="id26"/>
 			<label kind="guard" x="-1283" y="-969">moisture_level &lt;0 || moisture_level&gt;=100</label>
 		</transition>
 		<transition>
-			<source ref="id26"/>
-			<target ref="id25"/>
+			<source ref="id25"/>
+			<target ref="id24"/>
 			<label kind="synchronisation" x="-1683" y="-527">update_garden_display!</label>
 			<nail x="-1700" y="-527"/>
 		</transition>
 		<transition>
-			<source ref="id24"/>
-			<target ref="id28"/>
+			<source ref="id23"/>
+			<target ref="id27"/>
 			<label kind="guard" x="-1122" y="-858">moisture_level &gt;= 51 &amp;&amp;
 moisture_level &lt; 100</label>
 			<label kind="synchronisation" x="-1122" y="-875">soil_moist!</label>
@@ -405,23 +404,23 @@ moisture_level &lt; 100</label>
 			<nail x="-1130" y="-892"/>
 		</transition>
 		<transition>
-			<source ref="id24"/>
-			<target ref="id30"/>
+			<source ref="id23"/>
+			<target ref="id29"/>
 			<label kind="guard" x="-1351" y="-858">moisture_level &gt;= 31 &amp;&amp;
 moisture_level &lt;= 50</label>
 			<label kind="synchronisation" x="-1351" y="-875">soil_medium!</label>
 		</transition>
 		<transition>
-			<source ref="id24"/>
-			<target ref="id29"/>
+			<source ref="id23"/>
+			<target ref="id28"/>
 			<label kind="guard" x="-1564" y="-857">moisture_level &lt; 31</label>
 			<label kind="synchronisation" x="-1564" y="-875">soil_dry!</label>
 			<nail x="-1360" y="-892"/>
 			<nail x="-1572" y="-892"/>
 		</transition>
 		<transition>
-			<source ref="id25"/>
-			<target ref="id24"/>
+			<source ref="id24"/>
+			<target ref="id23"/>
 			<label kind="synchronisation" x="-1674" y="-935">measure_soil!</label>
 			<label kind="assignment" x="-1674" y="-918">timer := 0</label>
 		</transition>
