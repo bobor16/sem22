@@ -201,21 +201,21 @@ moisture_level &lt;= 50</label>
 	</template>
 	<template>
 		<name>Tank</name>
-		<declaration>clock time;
+		<declaration>clock time_tank;
 </declaration>
 		<location id="id11" x="-510" y="-544">
 			<name x="-544" y="-578">InitialState</name>
 		</location>
 		<location id="id12" x="-510" y="-340">
 			<name x="-501" y="-323">Measuring_Water_Level</name>
-			<label kind="invariant" x="-501" y="-306">time &lt;= 100</label>
+			<label kind="invariant" x="-501" y="-306">time_tank &lt;= 100</label>
 		</location>
 		<init ref="id11"/>
 		<transition>
 			<source ref="id12"/>
 			<target ref="id11"/>
-			<label kind="guard" x="-331" y="-442">time == 100</label>
-			<label kind="assignment" x="-331" y="-425">time := 0</label>
+			<label kind="guard" x="-331" y="-442">time_tank == 100</label>
+			<label kind="assignment" x="-331" y="-425">time_tank := 0</label>
 			<nail x="-340" y="-340"/>
 			<nail x="-340" y="-476"/>
 			<nail x="-476" y="-476"/>
@@ -231,7 +231,6 @@ moisture_level &lt;= 50</label>
 		<transition>
 			<source ref="id12"/>
 			<target ref="id11"/>
-			<label kind="guard" x="-127" y="-391">time &gt;= 5</label>
 			<label kind="synchronisation" x="-127" y="-442">start_pump_low?</label>
 			<label kind="assignment" x="-127" y="-425">moisture_level += 5,
 water_level -= 5</label>
@@ -242,7 +241,6 @@ water_level -= 5</label>
 		<transition>
 			<source ref="id12"/>
 			<target ref="id11"/>
-			<label kind="guard" x="-875" y="-391">time &gt;= 10</label>
 			<label kind="synchronisation" x="-875" y="-442">start_pump_high?</label>
 			<label kind="assignment" x="-875" y="-425">moisture_level += 10,
 water_level -= 10</label>
@@ -254,7 +252,7 @@ water_level -= 10</label>
 			<source ref="id11"/>
 			<target ref="id12"/>
 			<label kind="synchronisation" x="-501" y="-442">measure_tank?</label>
-			<label kind="assignment" x="-501" y="-425">time := 0</label>
+			<label kind="assignment" x="-501" y="-425">time_tank := 0</label>
 		</transition>
 	</template>
 	<template>
@@ -483,7 +481,7 @@ system MasterController_One,
 		</query>
 		<query>
 			<formula>E&lt;&gt; Garden_One.Moisture_Low imply MasterController_One.Sending_Request imply MasterController_One.Sent_Request</formula>
-			<comment></comment>
+			<comment>Implies that if the moisture sensor sends a request to the master controller, the message will be sent.</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Garden_One.Moisture_Medium</formula>
