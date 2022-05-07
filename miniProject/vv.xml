@@ -122,7 +122,7 @@ int ui_moisture_level;</declaration>
 		<name>TankController</name>
 		<declaration>// clock time;</declaration>
 		<location id="id4" x="-25" y="-170">
-			<name x="-85" y="-213">Water_Tank_Level</name>
+			<name x="-119" y="-204">Sending_Measure_Request</name>
 		</location>
 		<location id="id5" x="-493" y="203">
 			<name x="-527" y="220">Pumping</name>
@@ -131,7 +131,7 @@ int ui_moisture_level;</declaration>
 			<name x="-42" y="220">Idle</name>
 		</location>
 		<location id="id7" x="-493" y="-170">
-			<name x="-603" y="-213">Measuring_Water_Requirement</name>
+			<name x="-569" y="-204">Sent_Measure_Request</name>
 		</location>
 		<location id="id8" x="-493" y="16">
 			<name x="-476" y="8">Starting_Pumping_Low</name>
@@ -140,8 +140,17 @@ int ui_moisture_level;</declaration>
 			<name x="-714" y="8">Starting_Pumping_High</name>
 		</location>
 		<location id="id10" x="187" y="203">
+			<name x="170" y="221">Refilled</name>
 		</location>
 		<init ref="id6"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-195" y="25">moisture_level &gt;= 55</label>
+			<label kind="synchronisation" x="-195" y="8">stop_measuring_tank!</label>
+			<nail x="-204" y="-102"/>
+			<nail x="-204" y="136"/>
+		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id6"/>
@@ -175,8 +184,8 @@ moisture_level &lt;= 50</label>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id10"/>
-			<label kind="guard" x="195" y="8">water_level &lt; 10</label>
-			<label kind="synchronisation" x="196" y="25">refill!</label>
+			<label kind="guard" x="195" y="25">water_level &lt; 10</label>
+			<label kind="synchronisation" x="195" y="8">refill!</label>
 			<label kind="assignment" x="-7" y="-170">water_level = 10</label>
 			<nail x="187" y="-170"/>
 			<nail x="187" y="-128"/>
@@ -201,21 +210,19 @@ moisture_level &lt;= 50</label>
 	</template>
 	<template>
 		<name>Tank</name>
-		<declaration>clock time_tank;
+		<declaration>clock time;
 </declaration>
 		<location id="id11" x="-510" y="-544">
 			<name x="-544" y="-578">InitialState</name>
 		</location>
 		<location id="id12" x="-510" y="-340">
 			<name x="-501" y="-323">Measuring_Water_Level</name>
-			<label kind="invariant" x="-501" y="-306">time_tank &lt;= 100</label>
 		</location>
 		<init ref="id11"/>
 		<transition>
 			<source ref="id12"/>
 			<target ref="id11"/>
-			<label kind="guard" x="-331" y="-442">time_tank == 100</label>
-			<label kind="assignment" x="-331" y="-425">time_tank := 0</label>
+			<label kind="synchronisation" x="-331" y="-442">stop_measuring_tank?</label>
 			<nail x="-340" y="-340"/>
 			<nail x="-340" y="-476"/>
 			<nail x="-476" y="-476"/>
@@ -251,8 +258,8 @@ water_level -= 10</label>
 		<transition>
 			<source ref="id11"/>
 			<target ref="id12"/>
+			<label kind="guard" x="-331" y="-425">moisture_level &lt; 55</label>
 			<label kind="synchronisation" x="-501" y="-442">measure_tank?</label>
-			<label kind="assignment" x="-501" y="-425">time_tank := 0</label>
 		</transition>
 	</template>
 	<template>
@@ -331,7 +338,6 @@ water_level -= 10</label>
 		<transition>
 			<source ref="id15"/>
 			<target ref="id14"/>
-			<label kind="guard" x="-1623" y="-459">time &gt;= 10</label>
 			<label kind="synchronisation" x="-1623" y="-476">request_measure_soil?</label>
 			<nail x="-1700" y="-442"/>
 		</transition>
@@ -363,7 +369,6 @@ moisture_level &lt;= 50</label>
 			<source ref="id14"/>
 			<target ref="id13"/>
 			<label kind="synchronisation" x="-1589" y="-1028">measure_soil!</label>
-			<label kind="assignment" x="-1589" y="-1011">time := 0</label>
 		</transition>
 	</template>
 	<template>
@@ -400,7 +405,6 @@ clock time;
 		<transition>
 			<source ref="id24"/>
 			<target ref="id29"/>
-			<label kind="guard" x="-561" y="-170">time &gt;= 1000</label>
 			<label kind="synchronisation" x="-561" y="-187">no_water_request?</label>
 			<nail x="-578" y="-204"/>
 			<nail x="-340" y="-204"/>
@@ -422,13 +426,11 @@ clock time;
 		<transition>
 			<source ref="id27"/>
 			<target ref="id28"/>
-			<label kind="guard" x="-799" y="-170">time &gt;= 1000</label>
 			<label kind="synchronisation" x="-799" y="-187">low_water_request?</label>
 		</transition>
 		<transition>
 			<source ref="id25"/>
 			<target ref="id28"/>
-			<label kind="guard" x="-1045" y="-170">time &gt;= 1000</label>
 			<label kind="synchronisation" x="-1045" y="-187">high_water_request?</label>
 			<nail x="-1054" y="-136"/>
 		</transition>
@@ -436,7 +438,6 @@ clock time;
 			<source ref="id26"/>
 			<target ref="id27"/>
 			<label kind="synchronisation" x="-807" y="-340">soil_medium?</label>
-			<label kind="assignment" x="-807" y="-323">time := 0</label>
 			<nail x="-816" y="-400"/>
 		</transition>
 		<transition>
@@ -448,7 +449,6 @@ clock time;
 			<source ref="id26"/>
 			<target ref="id24"/>
 			<label kind="synchronisation" x="-561" y="-340">soil_moist?</label>
-			<label kind="assignment" x="-561" y="-323">time := 0</label>
 			<nail x="-816" y="-408"/>
 			<nail x="-578" y="-408"/>
 		</transition>
@@ -456,7 +456,6 @@ clock time;
 			<source ref="id26"/>
 			<target ref="id25"/>
 			<label kind="synchronisation" x="-1045" y="-340">soil_dry?</label>
-			<label kind="assignment" x="-1045" y="-323">time := 0</label>
 			<nail x="-816" y="-408"/>
 			<nail x="-1054" y="-408"/>
 		</transition>
@@ -476,12 +475,26 @@ system MasterController_One,
        Tank_One; </system>
 	<queries>
 		<query>
-			<formula></formula>
-			<comment></comment>
+			<formula>E&lt;&gt; TankController_One.Pumping imply Garden_One.Moisture_Low or Garden_One.Moisture_Medium or Garden_One.Moisture_High</formula>
+			<comment>It is able to water the three modes of water (low, medium, and high)</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; TankController_One.Pumping imply Tank_One.Measuring_Water_Level</formula>
+			<comment>When the pump is running, the distance sensor should be active.
+
+</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; GardenController_One.Measuring_Garden_Level and TankController_One.Sending_Measure_Request imply MasterController_One.Update_UI</formula>
+			<comment>The data collected from should be displayed on a web server hosted on the master controller.</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Garden_One.Moisture_Low imply MasterController_One.Sending_Request imply MasterController_One.Sent_Request</formula>
 			<comment>Implies that if the moisture sensor sends a request to the master controller, the message will be sent.</comment>
+		</query>
+		<query>
+			<formula></formula>
+			<comment></comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; Garden_One.Moisture_Medium</formula>
@@ -496,11 +509,15 @@ system MasterController_One,
 			<comment></comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; TankController_One.Measuring_Water_Requirement</formula>
+			<formula></formula>
 			<comment></comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; TankController_One.Water_Tank_Level</formula>
+			<formula>E&lt;&gt; TankController_One.Sent_Measure_Request</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; TankController_One.Sending_Measure_Request</formula>
 			<comment></comment>
 		</query>
 		<query>
@@ -516,6 +533,10 @@ system MasterController_One,
 			<comment></comment>
 		</query>
 		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+		<query>
 			<formula>A[] (1 &gt; 0)</formula>
 			<comment></comment>
 		</query>
@@ -525,7 +546,9 @@ system MasterController_One,
 		</query>
 		<query>
 			<formula>A[] !deadlock</formula>
-			<comment></comment>
+			<comment>The should not be any deadlocks in the system
+
+</comment>
 		</query>
 	</queries>
 </nta>
