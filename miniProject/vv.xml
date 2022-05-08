@@ -475,7 +475,7 @@ clock time;
 			<source ref="id29"/>
 			<target ref="id26"/>
 			<label kind="guard" x="-739" y="-501">moisture_level &gt; 100 || moisture_level &lt; 0</label>
-			<label kind="assignment" x="-518" y="-433">ErrStat := 6</label>
+			<label kind="assignment" x="-518" y="-433">ErrStat := 5</label>
 		</transition>
 		<transition>
 			<source ref="id29"/>
