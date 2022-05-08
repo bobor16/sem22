@@ -551,27 +551,27 @@ system MasterController_One,
 			<comment></comment>
 		</query>
 		<query>
-			<formula>A[] (Tank_One.Measuring_Water_Level &gt; 10 imply Tank_One.ErrorState)</formula>
+			<formula>A[] (Tank_One.Measuring_Water_Level &gt; 10 imply Tank_One.Error_Tank_Water_Limit)</formula>
 			<comment>if water level is higher than 10, throw an error.</comment>
 		</query>
 		<query>
-			<formula>A[] (TankController_One.Starting_Pumping_Low and (TankController_One.time &gt; 300) imply TankController_One.ErrorState2)</formula>
+			<formula>A[] (TankController_One.Starting_Pumping_Low and (TankController_One.time &gt; 300) imply TankController_One.Error_Pump_Start)</formula>
 			<comment>Starting the pump will be executed within 300ms</comment>
 		</query>
 		<query>
-			<formula>A[] (TankController_One.Starting_Pumping_High and (TankController_One.time &gt; 300) imply TankController_One.ErrorState2)</formula>
+			<formula>A[] (TankController_One.Starting_Pumping_High and (TankController_One.time &gt; 300) imply TankController_One.Error_Pump_Start)</formula>
 			<comment>Starting the pump will be executed within 300ms</comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; (TankController_One.Pumping and (TankController_One.time &gt; TankController_One.pump_duration) imply TankController_One.ErrorState)</formula>
+			<formula>E&lt;&gt; (TankController_One.Pumping and (TankController_One.time &gt; TankController_One.pump_duration) imply TankController_One.Error_Pump_Stop)</formula>
 			<comment>If pumping duration exceeds time it takes to pump 'High' or 'Low' (i.e., 2500ms or 5000ms) an error will be thrown.</comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; (Garden_One.Measuring_Moisture_Level and (moisture_level &gt; 100) or (moisture_level &lt; 0) imply Garden_One.Error)</formula>
+			<formula>E&lt;&gt; (Garden_One.Measuring_Moisture_Level and (moisture_level &gt; 100) or (moisture_level &lt; 0) imply Garden_One.Error_Moisture_Sensor)</formula>
 			<comment>If moisture sensor is showing more than 100 or less than 0, throw an error.</comment>
 		</query>
 		<query>
-			<formula>E&lt;&gt; (GardenController_One.Measuring_Garden_Level and (moisture_level &gt; 100) or (moisture_level &lt; 0) imply GardenController_One.ErrorState)</formula>
+			<formula>E&lt;&gt; (GardenController_One.Measuring_Garden_Level and (moisture_level &gt; 100) or (moisture_level &lt; 0) imply GardenController_One.Error_Moisture_Sensor)</formula>
 			<comment>if moisture value is more than 100 or less than 0, throw an error.</comment>
 		</query>
 		<query>
