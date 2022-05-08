@@ -10,6 +10,13 @@ chan low_water_request, high_water_request, no_water_request;
 chan pump_low, pump_high, refill, start_pump_high, start_pump_low;
 chan request_measure_soil, done_pumping, not_starting_pump, stop_measuring_tank;
 
+<<<<<<< Updated upstream
+=======
+clock sysTime;
+const int hour = 3600000;
+
+int[0,4] ErrStat;
+>>>>>>> Stashed changes
 int moisture_level;
 int water_level;
 
@@ -140,6 +147,7 @@ int ui_moisture_level;</declaration>
 		</location>
 		<init ref="id6"/>
 		<transition>
+<<<<<<< Updated upstream
 			<source ref="id4"/>
 			<target ref="id6"/>
 			<label kind="guard" x="-229" y="17">moisture_level &gt;= 55</label>
@@ -151,6 +159,25 @@ int ui_moisture_level;</declaration>
 			<source ref="id10"/>
 			<target ref="id6"/>
 			<label kind="synchronisation" x="17" y="187">not_starting_pump!</label>
+=======
+			<source ref="id9"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-620" y="-25">time &gt; 300</label>
+			<label kind="assignment" x="-620" y="-8">ErrStat := 1</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-858" y="-25">time &gt; 300</label>
+			<label kind="assignment" x="-858" y="-8">ErrStat := 1</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-714" y="102">time &gt; pump_duration</label>
+			<label kind="assignment" x="-714" y="119">ErrStat := 2</label>
+			<nail x="-535" y="93"/>
+>>>>>>> Stashed changes
 		</transition>
 		<transition>
 			<source ref="id8"/>
@@ -216,12 +243,19 @@ clock time;</declaration>
 		</location>
 		<init ref="id11"/>
 		<transition>
+<<<<<<< Updated upstream
 			<source ref="id12"/>
 			<target ref="id11"/>
 			<label kind="synchronisation" x="-331" y="-442">stop_measuring_tank?</label>
 			<label kind="assignment" x="-331" y="-408">time := 0</label>
 			<nail x="-340" y="-340"/>
 			<nail x="-340" y="-493"/>
+=======
+			<source ref="id15"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-433" y="-340">water_level &gt; 10</label>
+			<label kind="assignment" x="-433" y="-323">ErrStat := 3</label>
+>>>>>>> Stashed changes
 		</transition>
 		<transition>
 			<source ref="id12"/>
@@ -329,9 +363,16 @@ water_level -= 10</label>
 			<label kind="synchronisation" x="-1351" y="-739">low_water_request!</label>
 		</transition>
 		<transition>
+<<<<<<< Updated upstream
 			<source ref="id13"/>
 			<target ref="id16"/>
 			<label kind="guard" x="-1283" y="-969">moisture_level &lt;0 || moisture_level&gt;=100</label>
+=======
+			<source ref="id16"/>
+			<target ref="id19"/>
+			<label kind="guard" x="-1317" y="-977">moisture_level &lt;0 || moisture_level&gt;=100</label>
+			<label kind="assignment" x="-1317" y="-960">ErrStat := 4</label>
+>>>>>>> Stashed changes
 		</transition>
 		<transition>
 			<source ref="id15"/>
@@ -440,9 +481,16 @@ clock time_until_dry;</declaration>
 			<nail x="-816" y="-391"/>
 		</transition>
 		<transition>
+<<<<<<< Updated upstream
 			<source ref="id26"/>
 			<target ref="id23"/>
 			<label kind="guard" x="-739" y="-484">moisture_level &gt; 100 || moisture_level &lt; 0</label>
+=======
+			<source ref="id29"/>
+			<target ref="id26"/>
+			<label kind="guard" x="-739" y="-501">moisture_level &gt; 100 || moisture_level &lt; 0</label>
+			<label kind="assignment" x="-518" y="-433">ErrStat := 4</label>
+>>>>>>> Stashed changes
 		</transition>
 		<transition>
 			<source ref="id26"/>
