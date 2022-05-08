@@ -13,7 +13,7 @@ chan request_measure_soil, done_pumping, not_starting_pump, stop_measuring_tank;
 clock sysTime;
 const int hour = 3600000;
 
-int[0,5] ErrStat;
+int[0,4] ErrStat;
 int moisture_level;
 int water_level;</declaration>
 	<template>
@@ -150,19 +150,19 @@ int pump_duration;
 			<source ref="id9"/>
 			<target ref="id12"/>
 			<label kind="guard" x="-620" y="-25">time &gt; 300</label>
-			<label kind="assignment" x="-620" y="-8">ErrStat := 3</label>
+			<label kind="assignment" x="-620" y="-8">ErrStat := 1</label>
 		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id12"/>
 			<label kind="guard" x="-858" y="-25">time &gt; 300</label>
-			<label kind="assignment" x="-858" y="-8">ErrStat := 2</label>
+			<label kind="assignment" x="-858" y="-8">ErrStat := 1</label>
 		</transition>
 		<transition>
 			<source ref="id6"/>
 			<target ref="id4"/>
 			<label kind="guard" x="-714" y="102">time &gt; pump_duration</label>
-			<label kind="assignment" x="-714" y="119">ErrStat := 1</label>
+			<label kind="assignment" x="-714" y="119">ErrStat := 2</label>
 			<nail x="-535" y="93"/>
 		</transition>
 		<transition>
@@ -253,7 +253,7 @@ moisture_level &lt;= 50</label>
 			<source ref="id15"/>
 			<target ref="id13"/>
 			<label kind="guard" x="-433" y="-340">water_level &gt; 10</label>
-			<label kind="assignment" x="-433" y="-323">ErrStat := 4</label>
+			<label kind="assignment" x="-433" y="-323">ErrStat := 3</label>
 		</transition>
 		<transition>
 			<source ref="id15"/>
@@ -363,7 +363,7 @@ water_level -= 10</label>
 			<source ref="id16"/>
 			<target ref="id19"/>
 			<label kind="guard" x="-1317" y="-977">moisture_level &lt;0 || moisture_level&gt;=100</label>
-			<label kind="assignment" x="-1317" y="-960">ErrStat := 5</label>
+			<label kind="assignment" x="-1317" y="-960">ErrStat := 4</label>
 		</transition>
 		<transition>
 			<source ref="id18"/>
@@ -475,7 +475,7 @@ clock time;
 			<source ref="id29"/>
 			<target ref="id26"/>
 			<label kind="guard" x="-739" y="-501">moisture_level &gt; 100 || moisture_level &lt; 0</label>
-			<label kind="assignment" x="-518" y="-433">ErrStat := 5</label>
+			<label kind="assignment" x="-518" y="-433">ErrStat := 4</label>
 		</transition>
 		<transition>
 			<source ref="id29"/>
