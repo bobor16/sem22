@@ -13,29 +13,9 @@ chan request_measure_soil, done_pumping, not_starting_pump, stop_measuring_tank;
 clock sysTime;
 const int hour = 3600000;
 
-
+int[0,5] ErrStat;
 int moisture_level;
-int water_level;
-
-//TODO
-//     Create Three MicroControllers
-//        GardenController  
-//            Reads Moisture Level
-//            Sends Moisture Level to Tank Controller MoistureLevel?
-//            
-//        TankController
-//            Send to Master Controller
-//                WaterLevel
-//                Pumping Water? Nice to have
-//        MasterController
-//            ReadValues
-//                MoistureLevel
-//                PumpingStatus?? nice to have
-//                WaterLevel
-//           Request (Commands)
-//                Pump Now
-//                Set new Threshold
-</declaration>
+int water_level;</declaration>
 	<template>
 		<name>MasterController</name>
 		<declaration>clock time;
@@ -134,8 +114,8 @@ ui_water_level = water_level</label>
 int pump_duration;
 
 </declaration>
-		<location id="id4" x="-722" y="34">
-			<name x="-756" y="-9">ErrorState</name>
+		<location id="id4" x="-739" y="93">
+			<name x="-765" y="59">Error_Pump_Stop</name>
 		</location>
 		<location id="id5" x="-25" y="-170">
 			<name x="-119" y="-204">Sending_Measure_Request</name>
@@ -156,30 +136,34 @@ int pump_duration;
 			<label kind="invariant" x="-484" y="51">time &lt;= 300</label>
 		</location>
 		<location id="id10" x="-960" y="17">
-			<name x="-943" y="25">Starting_Pumping_High</name>
-			<label kind="invariant" x="-943" y="42">time &lt;= 300</label>
+			<name x="-952" y="59">Starting_Pumping_High</name>
+			<label kind="invariant" x="-952" y="76">time &lt;= 300</label>
 		</location>
 		<location id="id11" x="187" y="203">
 			<name x="170" y="221">Refilled</name>
 		</location>
-		<location id="id12" x="-722" y="-59">
-			<name x="-756" y="-110">ErrorState2</name>
+		<location id="id12" x="-722" y="17">
+			<name x="-756" y="-25">Error_Pump_Start</name>
 		</location>
 		<init ref="id7"/>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id12"/>
-			<label kind="guard" x="-688" y="-68">time &gt; 300</label>
+			<label kind="guard" x="-620" y="-25">time &gt; 300</label>
+			<label kind="assignment" x="-620" y="-8">ErrStat := 3</label>
 		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id12"/>
-			<label kind="guard" x="-833" y="-68">time &gt; 300</label>
+			<label kind="guard" x="-858" y="-25">time &gt; 300</label>
+			<label kind="assignment" x="-858" y="-8">ErrStat := 2</label>
 		</transition>
 		<transition>
 			<source ref="id6"/>
 			<target ref="id4"/>
-			<label kind="guard" x="-739" y="136">time &gt; pump_duration</label>
+			<label kind="guard" x="-714" y="102">time &gt; pump_duration</label>
+			<label kind="assignment" x="-714" y="119">ErrStat := 1</label>
+			<nail x="-535" y="93"/>
 		</transition>
 		<transition>
 			<source ref="id5"/>
@@ -255,20 +239,21 @@ moisture_level &lt;= 50</label>
 	<template>
 		<name>Tank</name>
 		<declaration>clock time;</declaration>
-		<location id="id13" x="-280" y="-382">
-			<name x="-290" y="-416">ErrorState</name>
+		<location id="id13" x="-280" y="-340">
+			<name x="-365" y="-374">Error_Tank_Water_Limit</name>
 		</location>
 		<location id="id14" x="-510" y="-544">
 			<name x="-527" y="-578">Idle</name>
 		</location>
 		<location id="id15" x="-510" y="-340">
-			<name x="-501" y="-323">Measuring_Water_Level</name>
+			<name x="-688" y="-323">Measuring_Water_Level</name>
 		</location>
 		<init ref="id14"/>
 		<transition>
 			<source ref="id15"/>
 			<target ref="id13"/>
-			<label kind="guard" x="-425" y="-357">water_level &gt; 10</label>
+			<label kind="guard" x="-433" y="-340">water_level &gt; 10</label>
+			<label kind="assignment" x="-433" y="-323">ErrStat := 4</label>
 		</transition>
 		<transition>
 			<source ref="id15"/>
@@ -309,7 +294,7 @@ water_level -= 10</label>
 		<name>GardenController</name>
 		<declaration>clock time;</declaration>
 		<location id="id16" x="-1360" y="-986">
-			<name x="-1445" y="-1037">Measuring_Garden_Level</name>
+			<name x="-1445" y="-1020">Measuring_Garden_Level</name>
 		</location>
 		<location id="id17" x="-1700" y="-986">
 			<name x="-1734" y="-1037">Idle</name>
@@ -319,7 +304,7 @@ water_level -= 10</label>
 			<name x="-1428" y="-416">UpdatedMoistureLevel</name>
 		</location>
 		<location id="id19" x="-986" y="-986">
-			<name x="-969" y="-994">ErrorState</name>
+			<name x="-969" y="-994">Error_Moisture_Sensor</name>
 		</location>
 		<location id="id20" x="-1122" y="-782">
 			<name x="-1105" y="-790">Measuring_High</name>
@@ -377,7 +362,8 @@ water_level -= 10</label>
 		<transition>
 			<source ref="id16"/>
 			<target ref="id19"/>
-			<label kind="guard" x="-1317" y="-1011">moisture_level &lt;0 || moisture_level&gt;=100</label>
+			<label kind="guard" x="-1317" y="-977">moisture_level &lt;0 || moisture_level&gt;=100</label>
+			<label kind="assignment" x="-1317" y="-960">ErrStat := 5</label>
 		</transition>
 		<transition>
 			<source ref="id18"/>
@@ -426,7 +412,7 @@ moisture_level &lt;= 50</label>
 clock time;
 </declaration>
 		<location id="id26" x="-408" y="-476">
-			<name x="-425" y="-510">Error</name>
+			<name x="-518" y="-450">Error_Moisture_Sensor</name>
 		</location>
 		<location id="id27" x="-578" y="-255">
 			<name x="-553" y="-264">Moisture_High</name>
@@ -489,6 +475,7 @@ clock time;
 			<source ref="id29"/>
 			<target ref="id26"/>
 			<label kind="guard" x="-739" y="-501">moisture_level &gt; 100 || moisture_level &lt; 0</label>
+			<label kind="assignment" x="-518" y="-433">ErrStat := 6</label>
 		</transition>
 		<transition>
 			<source ref="id29"/>
