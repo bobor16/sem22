@@ -2,10 +2,10 @@
 #include <WiFi.h>
 
 #include <Wire.h>
-#define SensorPin 27 
+#define SensorPin 34
 float sensorValue = 0; 
 // REPLACE WITH THE MAC Address of your receiver 
-uint8_t broadcastAddress[] = {0xA8, 0x03, 0x2A, 0xF3, 0x27, 0x88};
+uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
 
 // Define variables to store BME280 readings to be sent
 float temperature;
@@ -82,16 +82,17 @@ void setup() {
  
 void loop() {
   Serial.println("Sensor readings:");
-  
-  Serial.println(analogRead(SensorPin));
+  float moisture = analogRead(SensorPin);
+  moisture = moisture/2300*100;
+ // Serial.println(moisture/2300*100);
+   Serial.println(String(moisture, 2) + String("% Moist"));
+  Serial.println("% Moist");
 
   
-
-
   getReadings();
 
   // Set values to send
-  BME280Readings.temp = analogRead(SensorPin);
+  BME280Readings.temp = moisture;
 
   // Send message via ESP-NOW
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &BME280Readings, sizeof(BME280Readings));
@@ -102,14 +103,8 @@ void loop() {
   else {
     Serial.println("Error sending the data");
   }
-  //updateDisplay();
-    Serial.println("Sensor readings:");
-  
-  Serial.println(analogRead(SensorPin));
-  delay(5000);
-    Serial.println("Sensor readings:");
-  
-  Serial.println(analogRead(SensorPin));
+
+  delay(10000);
 }
 void getReadings(){
   temperature = analogRead(SensorPin);
