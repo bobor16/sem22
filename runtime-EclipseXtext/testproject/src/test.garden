@@ -1,3 +1,4 @@
 component GardenBed{
-	device = 
+	device = moistureSensor@10
+	device = temperatureSensor
 }

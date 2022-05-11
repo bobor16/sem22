@@ -411,17 +411,43 @@ ruleMoistureSensor returns [EObject current=null]
 }:
 	(
 		(
-			lv_name_0_0='moistureSensor'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getMoistureSensorRule());
+			(
+				lv_name_0_0='moistureSensor'
+				{
+					newLeafNode(lv_name_0_0, grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0());
 				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "moistureSensor");
-			}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getMoistureSensorRule());
+					}
+					setWithLastConsumed($current, "name", lv_name_0_0, "moistureSensor");
+				}
+			)
 		)
+		(
+			otherlv_1='@'
+			{
+				newLeafNode(otherlv_1, grammarAccess.getMoistureSensorAccess().getCommercialAtKeyword_1_0());
+			}
+			(
+				(
+					lv_threshold_2_0=RULE_INT
+					{
+						newLeafNode(lv_threshold_2_0, grammarAccess.getMoistureSensorAccess().getThresholdINTTerminalRuleCall_1_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getMoistureSensorRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"threshold",
+							lv_threshold_2_0,
+							"org.eclipse.xtext.common.Terminals.INT");
+					}
+				)
+			)
+		)?
 	)
 ;
 

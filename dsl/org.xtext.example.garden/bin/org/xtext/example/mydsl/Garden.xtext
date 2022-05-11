@@ -47,7 +47,7 @@ TemperatureSensor:
 ; 
 
 MoistureSensor:
-	name='moistureSensor'
+	name='moistureSensor' ('@'threshold=INT)?
 ; 
 
 UltrasonicSensor:

@@ -265,9 +265,9 @@ ruleMoistureSensor
 	}
 	:
 	(
-		{ before(grammarAccess.getMoistureSensorAccess().getNameAssignment()); }
-		(rule__MoistureSensor__NameAssignment)
-		{ after(grammarAccess.getMoistureSensorAccess().getNameAssignment()); }
+		{ before(grammarAccess.getMoistureSensorAccess().getGroup()); }
+		(rule__MoistureSensor__Group__0)
+		{ after(grammarAccess.getMoistureSensorAccess().getGroup()); }
 	)
 ;
 finally {
@@ -594,6 +594,114 @@ finally {
 }
 
 
+rule__MoistureSensor__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__MoistureSensor__Group__0__Impl
+	rule__MoistureSensor__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getMoistureSensorAccess().getNameAssignment_0()); }
+	(rule__MoistureSensor__NameAssignment_0)
+	{ after(grammarAccess.getMoistureSensorAccess().getNameAssignment_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__MoistureSensor__Group__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getMoistureSensorAccess().getGroup_1()); }
+	(rule__MoistureSensor__Group_1__0)?
+	{ after(grammarAccess.getMoistureSensorAccess().getGroup_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__MoistureSensor__Group_1__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__MoistureSensor__Group_1__0__Impl
+	rule__MoistureSensor__Group_1__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group_1__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getMoistureSensorAccess().getCommercialAtKeyword_1_0()); }
+	'@'
+	{ after(grammarAccess.getMoistureSensorAccess().getCommercialAtKeyword_1_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group_1__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__MoistureSensor__Group_1__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__Group_1__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getMoistureSensorAccess().getThresholdAssignment_1_1()); }
+	(rule__MoistureSensor__ThresholdAssignment_1_1)
+	{ after(grammarAccess.getMoistureSensorAccess().getThresholdAssignment_1_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 rule__Domainmodel__ElementsAssignment
 	@init {
 		int stackSize = keepStackSize();
@@ -711,19 +819,34 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MoistureSensor__NameAssignment
+rule__MoistureSensor__NameAssignment_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+		{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0()); }
 		(
-			{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+			{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0()); }
 			'moistureSensor'
-			{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+			{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0()); }
 		)
-		{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+		{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__ThresholdAssignment_1_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getMoistureSensorAccess().getThresholdINTTerminalRuleCall_1_1_0()); }
+		RULE_INT
+		{ after(grammarAccess.getMoistureSensorAccess().getThresholdINTTerminalRuleCall_1_1_0()); }
 	)
 ;
 finally {
