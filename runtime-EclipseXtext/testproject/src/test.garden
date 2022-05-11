@@ -1,7 +1,3 @@
-component GardenBed { 
-	
-}
-
-component WaterTank { 
-	
+component GardenBed{
+	device = 
 }

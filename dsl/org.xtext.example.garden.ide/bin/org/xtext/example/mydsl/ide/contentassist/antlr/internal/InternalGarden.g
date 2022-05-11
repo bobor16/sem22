@@ -174,6 +174,156 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Entry rule entryRuleDevice
+entryRuleDevice
+:
+{ before(grammarAccess.getDeviceRule()); }
+	 ruleDevice
+{ after(grammarAccess.getDeviceRule()); } 
+	 EOF 
+;
+
+// Rule Device
+ruleDevice 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getDeviceAccess().getGroup()); }
+		(rule__Device__Group__0)
+		{ after(grammarAccess.getDeviceAccess().getGroup()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleDeviceType
+entryRuleDeviceType
+:
+{ before(grammarAccess.getDeviceTypeRule()); }
+	 ruleDeviceType
+{ after(grammarAccess.getDeviceTypeRule()); } 
+	 EOF 
+;
+
+// Rule DeviceType
+ruleDeviceType 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getDeviceTypeAccess().getAlternatives()); }
+		(rule__DeviceType__Alternatives)
+		{ after(grammarAccess.getDeviceTypeAccess().getAlternatives()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleTemperatureSensor
+entryRuleTemperatureSensor
+:
+{ before(grammarAccess.getTemperatureSensorRule()); }
+	 ruleTemperatureSensor
+{ after(grammarAccess.getTemperatureSensorRule()); } 
+	 EOF 
+;
+
+// Rule TemperatureSensor
+ruleTemperatureSensor 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getTemperatureSensorAccess().getNameAssignment()); }
+		(rule__TemperatureSensor__NameAssignment)
+		{ after(grammarAccess.getTemperatureSensorAccess().getNameAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleMoistureSensor
+entryRuleMoistureSensor
+:
+{ before(grammarAccess.getMoistureSensorRule()); }
+	 ruleMoistureSensor
+{ after(grammarAccess.getMoistureSensorRule()); } 
+	 EOF 
+;
+
+// Rule MoistureSensor
+ruleMoistureSensor 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getMoistureSensorAccess().getNameAssignment()); }
+		(rule__MoistureSensor__NameAssignment)
+		{ after(grammarAccess.getMoistureSensorAccess().getNameAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleUltrasonicSensor
+entryRuleUltrasonicSensor
+:
+{ before(grammarAccess.getUltrasonicSensorRule()); }
+	 ruleUltrasonicSensor
+{ after(grammarAccess.getUltrasonicSensorRule()); } 
+	 EOF 
+;
+
+// Rule UltrasonicSensor
+ruleUltrasonicSensor 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getUltrasonicSensorAccess().getNameAssignment()); }
+		(rule__UltrasonicSensor__NameAssignment)
+		{ after(grammarAccess.getUltrasonicSensorAccess().getNameAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+// Entry rule entryRuleWaterPump
+entryRuleWaterPump
+:
+{ before(grammarAccess.getWaterPumpRule()); }
+	 ruleWaterPump
+{ after(grammarAccess.getWaterPumpRule()); } 
+	 EOF 
+;
+
+// Rule WaterPump
+ruleWaterPump 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getWaterPumpAccess().getNameAssignment()); }
+		(rule__WaterPump__NameAssignment)
+		{ after(grammarAccess.getWaterPumpAccess().getNameAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__ComponentType__Alternatives
 	@init {
 		int stackSize = keepStackSize();
@@ -189,6 +339,39 @@ rule__ComponentType__Alternatives
 		{ before(grammarAccess.getComponentTypeAccess().getWaterTankParserRuleCall_1()); }
 		ruleWaterTank
 		{ after(grammarAccess.getComponentTypeAccess().getWaterTankParserRuleCall_1()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DeviceType__Alternatives
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getDeviceTypeAccess().getTemperatureSensorParserRuleCall_0()); }
+		ruleTemperatureSensor
+		{ after(grammarAccess.getDeviceTypeAccess().getTemperatureSensorParserRuleCall_0()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getDeviceTypeAccess().getMoistureSensorParserRuleCall_1()); }
+		ruleMoistureSensor
+		{ after(grammarAccess.getDeviceTypeAccess().getMoistureSensorParserRuleCall_1()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getDeviceTypeAccess().getUltrasonicSensorParserRuleCall_2()); }
+		ruleUltrasonicSensor
+		{ after(grammarAccess.getDeviceTypeAccess().getUltrasonicSensorParserRuleCall_2()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getDeviceTypeAccess().getWaterPumpParserRuleCall_3()); }
+		ruleWaterPump
+		{ after(grammarAccess.getDeviceTypeAccess().getWaterPumpParserRuleCall_3()); }
 	)
 ;
 finally {
@@ -282,6 +465,7 @@ rule__Component__Group__3
 	}
 :
 	rule__Component__Group__3__Impl
+	rule__Component__Group__4
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -293,9 +477,116 @@ rule__Component__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_3()); }
+	{ before(grammarAccess.getComponentAccess().getDevicesAssignment_3()); }
+	(rule__Component__DevicesAssignment_3)*
+	{ after(grammarAccess.getComponentAccess().getDevicesAssignment_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Component__Group__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Component__Group__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Component__Group__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_4()); }
 	'}'
-	{ after(grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_3()); }
+	{ after(grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_4()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__Device__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Device__Group__0__Impl
+	rule__Device__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getDeviceAccess().getDeviceKeyword_0()); }
+	'device'
+	{ after(grammarAccess.getDeviceAccess().getDeviceKeyword_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Device__Group__1__Impl
+	rule__Device__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getDeviceAccess().getEqualsSignKeyword_1()); }
+	'='
+	{ after(grammarAccess.getDeviceAccess().getEqualsSignKeyword_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__Group__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__Device__Group__2__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__Group__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getDeviceAccess().getTypeAssignment_2()); }
+	(rule__Device__TypeAssignment_2)
+	{ after(grammarAccess.getDeviceAccess().getTypeAssignment_2()); }
 )
 ;
 finally {
@@ -327,6 +618,21 @@ rule__Component__ComponentTypeAssignment_1
 		{ before(grammarAccess.getComponentAccess().getComponentTypeComponentTypeParserRuleCall_1_0()); }
 		ruleComponentType
 		{ after(grammarAccess.getComponentAccess().getComponentTypeComponentTypeParserRuleCall_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Component__DevicesAssignment_3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getComponentAccess().getDevicesDeviceParserRuleCall_3_0()); }
+		ruleDevice
+		{ after(grammarAccess.getComponentAccess().getDevicesDeviceParserRuleCall_3_0()); }
 	)
 ;
 finally {
@@ -365,6 +671,97 @@ rule__WaterTank__NameAssignment
 			{ after(grammarAccess.getWaterTankAccess().getNameWaterTankKeyword_0()); }
 		)
 		{ after(grammarAccess.getWaterTankAccess().getNameWaterTankKeyword_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__Device__TypeAssignment_2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getDeviceAccess().getTypeDeviceTypeParserRuleCall_2_0()); }
+		ruleDeviceType
+		{ after(grammarAccess.getDeviceAccess().getTypeDeviceTypeParserRuleCall_2_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__TemperatureSensor__NameAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getTemperatureSensorAccess().getNameTemperatureSensorKeyword_0()); }
+		(
+			{ before(grammarAccess.getTemperatureSensorAccess().getNameTemperatureSensorKeyword_0()); }
+			'temperatureSensor'
+			{ after(grammarAccess.getTemperatureSensorAccess().getNameTemperatureSensorKeyword_0()); }
+		)
+		{ after(grammarAccess.getTemperatureSensorAccess().getNameTemperatureSensorKeyword_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MoistureSensor__NameAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+		(
+			{ before(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+			'moistureSensor'
+			{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+		)
+		{ after(grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__UltrasonicSensor__NameAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getUltrasonicSensorAccess().getNameUltraSonicSensorKeyword_0()); }
+		(
+			{ before(grammarAccess.getUltrasonicSensorAccess().getNameUltraSonicSensorKeyword_0()); }
+			'ultraSonicSensor'
+			{ after(grammarAccess.getUltrasonicSensorAccess().getNameUltraSonicSensorKeyword_0()); }
+		)
+		{ after(grammarAccess.getUltrasonicSensorAccess().getNameUltraSonicSensorKeyword_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__WaterPump__NameAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getWaterPumpAccess().getNameWaterPumpKeyword_0()); }
+		(
+			{ before(grammarAccess.getWaterPumpAccess().getNameWaterPumpKeyword_0()); }
+			'waterPump'
+			{ after(grammarAccess.getWaterPumpAccess().getNameWaterPumpKeyword_0()); }
+		)
+		{ after(grammarAccess.getWaterPumpAccess().getNameWaterPumpKeyword_0()); }
 	)
 ;
 finally {

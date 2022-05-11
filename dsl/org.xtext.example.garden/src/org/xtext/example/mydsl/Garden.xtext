@@ -15,7 +15,7 @@ Domainmodel:
 // Gardenbed, WaterTank etc. 
 Component:
 	'component' componentType=ComponentType '{'		//Should be unique ? How to - Could also just give it a id afterwards in code generation
-//	devices+=Device* 	//actuators + sensors
+	devices+=Device* 	//actuators + sensors
 '}'
 ;
 
@@ -32,10 +32,28 @@ WaterTank:
 	//name=ID
 ;
 
-
-/*
 Device:
-	TemperatureSensor | MoistureSensor | TemperatureSensor | TemperatureSensor |
+	'device' '=' type=DeviceType
 ;
-* 
-*  */
+
+
+DeviceType:
+	TemperatureSensor | MoistureSensor | UltrasonicSensor| WaterPump 
+;
+
+
+TemperatureSensor:
+	name='temperatureSensor'
+; 
+
+MoistureSensor:
+	name='moistureSensor'
+; 
+
+UltrasonicSensor:
+	name='ultraSonicSensor'
+;
+
+WaterPump:
+	name='waterPump'
+;
