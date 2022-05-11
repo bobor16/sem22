@@ -2,8 +2,23 @@ grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
 
 generate garden "http://www.xtext.org/example/mydsl/Garden"
 
-Model:
-	greetings+=Greeting*;
-	
-Greeting:
-	'Hello' name=ID '!';
+//Domainmodel:
+//    (elements+=AbstractElement)*;
+
+Component:
+	'component' componentName=ID
+//	devices +=Device*
+;
+
+
+
+
+
+
+
+
+
+
+
+
+

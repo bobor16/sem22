@@ -1,0 +1,181 @@
+grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
+
+generate garden "http://www.xtext.org/example/mydsl/Garden"
+
+Domainmodel:
+    (elements+=AbstractElement)*;
+ 
+PackageDeclaration:
+    'package' name=QualifiedName '{'
+        (elements+=AbstractElement)*
+    '}';
+ 
+AbstractElement:
+    PackageDeclaration | Type | Import;
+ 
+QualifiedName:
+    ID ('.' ID)*;
+ 
+Import:
+    'import' importedNamespace=QualifiedNameWithWildcard;
+ 
+QualifiedNameWithWildcard:
+    QualifiedName '.*'?;
+ 
+Type:
+    DataType | Entity;
+ 
+DataType:
+    'datatype' name=ID;
+ 
+Entity:
+    'entity' name=ID ('extends' superType=[Entity|QualifiedName])? '{'
+        (features+=Feature)*
+    '}';
+ 
+Feature:
+    (many?='many')? name=ID ':' type=[Type|QualifiedName];
+    
+    
+
+/*
+
+Domainmodel:
+    (elements+=AbstractElement)*;
+ 
+PackageDeclaration:
+    'package' name=QualifiedName '{'
+        (elements+=AbstractElement)*
+    '}';
+ 
+AbstractElement:
+    PackageDeclaration | Type | Import;
+ 
+QualifiedName:
+    ID ('.' ID)*;
+ 
+Import:
+    'import' importedNamespace=QualifiedNameWithWildcard;
+ 
+QualifiedNameWithWildcard:
+    QualifiedName '.*'?;
+ 
+Type:
+    DataType | Entity;
+ 
+DataType:
+    'datatype' name=ID;
+ 
+Entity:
+    'entity' name=ID ('extends' superType=[Entity|QualifiedName])? '{'
+        (features+=Feature)*
+    '}';
+ 
+Feature:
+    (many?='many')? name=ID ':' type=[Type|QualifiedName];
+
+
+
+
+/*
+/*		Version 02 
+
+//1. Since DomainModel no longer contains types but also packages :
+//		Introduce the super type AbstractElement for the packageDeclaration adn Types 
+Domainmodel:
+    (elements+=AbstractElement)*
+;
+ 
+AbstractElement:
+    PackageDeclaration | Type | Import
+;
+    
+    PackageDeclaration:
+    'package' name=QualifiedName '{'
+        (elements+=AbstractElement)*
+    '}'
+;
+    
+QualifiedName:
+    ID ('.' ID)*
+;
+    
+Import:
+    'import' importedNamespace=QualifiedNameWithWildcard // Similar to the rule QualifiedName, QualifiedNameWithWildcard returns a plain string.
+;
+    
+QualifiedNameWithWildcard:
+    QualifiedName '.*'?  // mports can be defined in a very convenient way with Xtext. If you use the name importedNamespace in a parser rule, the framework will treat the value as an import. It even supports wildcards and handles them as expected:
+;
+    
+Type: 
+    DataType | Entity
+;
+ 
+DataType: 
+	'datatype' name=ID
+;
+ 
+Entity: // he last step is to allow fully qualified names in cross-references, too. Otherwise one could not refer to an entity without adding an import statement.
+    'entity' name=ID ('extends' superType=[Entity|QualifiedName])? '{' // Please note that the bar (|) is not an alternative in the context of a cross-reference, but used to specify the syntax of the parsed string.
+        (features+=Feature)*
+    '}'
+;
+    
+    
+ 
+Feature:
+    (many?='many')? name=ID ':' type=[Type|QualifiedName]
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+
+
+/*			Version 01 			 
+
+Domainmodel:
+    (elements+=Type)*; // always used as start rule
+    				   // "DomainModel ocntains an arbitrary number(*) of types which are added (+=) to a 'feature' called elements
+ 
+Type: //Delegeates to either t he rule DataType or the Entity Rule
+    DataType | Entity;
+ 
+DataType: // keyword 'data'type'  followed by an 'identified' which is parsed by a rule called ID. // Not  The ID rule is defined in the super grammar 'org.eclipse.xetxt common.Terminals, and parses a single word aka identifier    
+    'datatype' name=ID;
+ 
+Entity:
+    'entity' name=ID ('extends' superType=[Entity])? '{' // extends caluse is parentehhsized and optional (?) 
+    													// since the feature named superType is a cross reference (note the square brackets)
+        (features+=Feature)* // between the curly braces there can be any number of features, which invokes the next rule
+    '}';
+ 
+Feature:
+    (many?='many')? name=ID ':' type=[Type]; // The keyword many shall be used to model a multi-valued feature in this DSL. The assignment operator (?=) implies that the feature many is of type boolean. You are already familiar with the other syntax elements in this parser rule.
+    
+/*
+ * 
+ * This entities grammar already uses the most important concepts of Xtext’s grammar language. You have learned that keywords are written as string literals and a simple assignment uses a plain equal sign (=), whereas a multi-value assignment uses a plus-equals (+=). We have also seen the boolean assignment operator (?=). Furthermore the example contains syntax elements with different cardinalities (? = optional, * = any number, + = at least once) and demonstrates how cross-references can be declared. Please consult the Grammar Language Reference for more details. Let’s now have a look what you can do with such a language description
+ */
+ 
+ 
+ /*TL;DR
+  * 
+  * 	 ?	Optional
+  *     *=	Any number
+  * 	+= At least once
+  */

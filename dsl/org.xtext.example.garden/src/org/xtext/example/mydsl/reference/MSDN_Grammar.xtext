@@ -1,0 +1,53 @@
+grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
+
+generate garden "http://www.xtext.org/example/mydsl/Garden"
+
+
+ MathExp:
+	'program' name=ID
+	variables += VarBinding*	// Called varBindings in guide
+	functions+=Function*
+;
+
+
+VarBinding:
+	'var' name=ID '=' expression=Exp 
+;
+
+Exp returns Expression:
+	Factor (( {Plus.left=current} '+' | {Minus.left=current}  '-' ) right=Factor)*
+;
+
+Factor returns Expression:
+	Primary (({Mult.left=current} '*' | {Div.left=current}  '/'  ) right=Primary)*
+;
+
+Primary returns Expression:
+	{MathNumber} value=INT  |{Paranthesis} '(' exp=Exp')'  |  VariableUse | LetBinding
+;
+
+LetBinding:
+	'let' name=ID '=' binding=Exp 'in' body=Exp 'end'
+;
+
+Binding:
+	VarBinding | LetBinding
+;
+
+VariableUse:
+	ref = [Binding]
+;
+
+Function:
+	'external' name=ID'('argument=Argument?')'
+;
+Argument:
+	type=Type
+;
+Type:
+	typeName=('string'|'INT'|'boolean')
+;
+
+
+//AttributeType:
+//elementType=ElementType (array ?='[' (length=INT)? ']')?;
