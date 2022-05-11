@@ -118,5 +118,3 @@ void updateDisplay(){
   Serial.print(incomingReadings.temp);
   Serial.println(" ºC");
 }
-
-

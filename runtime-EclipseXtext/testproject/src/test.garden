@@ -1,1 +1,7 @@
-component gardenBed
+component GardenBed {
+	
+}
+
+component WaterTank {
+	
+}

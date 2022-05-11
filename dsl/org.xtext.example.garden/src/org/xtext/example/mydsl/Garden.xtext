@@ -2,23 +2,40 @@ grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
 
 generate garden "http://www.xtext.org/example/mydsl/Garden"
 
-//Domainmodel:
-//    (elements+=AbstractElement)*;
 
+/*	Design Choices
+ *		Each component is automatically fitted with  
+ * 
+ */
+
+// MetaModel
+Domainmodel:
+    (elements+=Component)*;
+
+// Gardenbed, WaterTank etc. 
 Component:
-	'component' componentName=ID
-//	devices +=Device*
+	'component' componentType=ComponentType '{'		//Should be unique ? How to - Could also just give it a id afterwards in code generation
+//	devices+=Device* 	//actuators + sensors
+'}'
+;
+
+ComponentType:
+	GardenBed | WaterTank	
+;
+
+GardenBed:
+	name='GardenBed'
+;
+
+WaterTank:
+	name='WaterTank'
+	//name=ID
 ;
 
 
-
-
-
-
-
-
-
-
-
-
-
+/*
+Device:
+	TemperatureSensor | MoistureSensor | TemperatureSensor | TemperatureSensor |
+;
+* 
+*  */

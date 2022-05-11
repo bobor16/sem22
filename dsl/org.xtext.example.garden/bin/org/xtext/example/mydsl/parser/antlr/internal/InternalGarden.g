@@ -43,7 +43,7 @@ import org.xtext.example.mydsl.services.GardenGrammarAccess;
 
     @Override
     protected String getFirstRuleName() {
-    	return "Component";
+    	return "Domainmodel";
    	}
 
    	@Override
@@ -59,6 +59,42 @@ import org.xtext.example.mydsl.services.GardenGrammarAccess;
         appendSkippedTokens();
     }
 }
+
+// Entry rule entryRuleDomainmodel
+entryRuleDomainmodel returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getDomainmodelRule()); }
+	iv_ruleDomainmodel=ruleDomainmodel
+	{ $current=$iv_ruleDomainmodel.current; }
+	EOF;
+
+// Rule Domainmodel
+ruleDomainmodel returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				newCompositeNode(grammarAccess.getDomainmodelAccess().getElementsComponentParserRuleCall_0());
+			}
+			lv_elements_0_0=ruleComponent
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getDomainmodelRule());
+				}
+				add(
+					$current,
+					"elements",
+					lv_elements_0_0,
+					"org.xtext.example.mydsl.Garden.Component");
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)*
+;
 
 // Entry rule entryRuleComponent
 entryRuleComponent returns [EObject current=null]:
@@ -82,21 +118,128 @@ ruleComponent returns [EObject current=null]
 		}
 		(
 			(
-				lv_componentName_1_0=RULE_ID
 				{
-					newLeafNode(lv_componentName_1_0, grammarAccess.getComponentAccess().getComponentNameIDTerminalRuleCall_1_0());
+					newCompositeNode(grammarAccess.getComponentAccess().getComponentTypeComponentTypeParserRuleCall_1_0());
 				}
+				lv_componentType_1_0=ruleComponentType
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getComponentRule());
+						$current = createModelElementForParent(grammarAccess.getComponentRule());
 					}
-					setWithLastConsumed(
+					set(
 						$current,
-						"componentName",
-						lv_componentName_1_0,
-						"org.eclipse.xtext.common.Terminals.ID");
+						"componentType",
+						lv_componentType_1_0,
+						"org.xtext.example.mydsl.Garden.ComponentType");
+					afterParserOrEnumRuleCall();
 				}
 			)
+		)
+		otherlv_2='{'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getComponentAccess().getLeftCurlyBracketKeyword_2());
+		}
+		otherlv_3='}'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_3());
+		}
+	)
+;
+
+// Entry rule entryRuleComponentType
+entryRuleComponentType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getComponentTypeRule()); }
+	iv_ruleComponentType=ruleComponentType
+	{ $current=$iv_ruleComponentType.current; }
+	EOF;
+
+// Rule ComponentType
+ruleComponentType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getComponentTypeAccess().getGardenBedParserRuleCall_0());
+		}
+		this_GardenBed_0=ruleGardenBed
+		{
+			$current = $this_GardenBed_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getComponentTypeAccess().getWaterTankParserRuleCall_1());
+		}
+		this_WaterTank_1=ruleWaterTank
+		{
+			$current = $this_WaterTank_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleGardenBed
+entryRuleGardenBed returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getGardenBedRule()); }
+	iv_ruleGardenBed=ruleGardenBed
+	{ $current=$iv_ruleGardenBed.current; }
+	EOF;
+
+// Rule GardenBed
+ruleGardenBed returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			lv_name_0_0='GardenBed'
+			{
+				newLeafNode(lv_name_0_0, grammarAccess.getGardenBedAccess().getNameGardenBedKeyword_0());
+			}
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getGardenBedRule());
+				}
+				setWithLastConsumed($current, "name", lv_name_0_0, "GardenBed");
+			}
+		)
+	)
+;
+
+// Entry rule entryRuleWaterTank
+entryRuleWaterTank returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getWaterTankRule()); }
+	iv_ruleWaterTank=ruleWaterTank
+	{ $current=$iv_ruleWaterTank.current; }
+	EOF;
+
+// Rule WaterTank
+ruleWaterTank returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			lv_name_0_0='WaterTank'
+			{
+				newLeafNode(lv_name_0_0, grammarAccess.getWaterTankAccess().getNameWaterTankKeyword_0());
+			}
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getWaterTankRule());
+				}
+				setWithLastConsumed($current, "name", lv_name_0_0, "WaterTank");
+			}
 		)
 	)
 ;
