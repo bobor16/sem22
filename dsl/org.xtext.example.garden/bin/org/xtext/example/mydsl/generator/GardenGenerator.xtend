@@ -19,13 +19,21 @@ class GardenGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
+		var i =1 as int;
+		
 		for (e : resource.allContents.toIterable.filter(GardenBed)) {
-                fsa.generateFile(e.name+".ino", e.compileGardenController)
+                fsa.generateFile(e.name+i + ".ino", e.compileGardenController
+                	
+                )
+                i++
         }
         
+        i=1
+        
         for (e : resource.allContents.toIterable.filter(WaterTank)) {
-                fsa.generateFile(e.name+".ino", e.compileGardenController)
+                fsa.generateFile(e.name+i+".ino", e.compileGardenController)
         }
+        i++
 	}
 	
 	def compileGardenController(WaterTank waterTank)'''
