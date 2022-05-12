@@ -7,21 +7,21 @@ float sensorValue = 0;
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
 
-// Define variables to store BME280 readings to be sent
-float temperature;
+// Define variables to store sensor readings to be sent
+float moisture;
 // Define variables to store incoming readings
-float incomingTemp;
+float incomingmoist;
 // Variable to store if sending data was successful
 String success;
 
 //Structure example to send data
 //Must match the receiver structure
 typedef struct struct_message {
-    float temp;
+    float moist;
 } struct_message;
 
-// Create a struct_message called BME280Readings to hold sensor readings
-struct_message BME280Readings;
+// Create a struct_message called sensorReadings to hold sensor readings
+struct_message sensorReadings;
 
 // Create a struct_message to hold incoming sensor readings
 struct_message incomingReadings;
@@ -45,7 +45,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
   Serial.print("Bytes received: ");
   Serial.println(len);
-  incomingTemp = incomingReadings.temp;
+  incomingmoist = incomingReadings.moist;
 }
  
 void setup() {
@@ -92,10 +92,10 @@ void loop() {
   getReadings();
 
   // Set values to send
-  BME280Readings.temp = moisture;
+  sensorReadings.moist = moisture;
 
   // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &BME280Readings, sizeof(BME280Readings));
+  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &sensorReadings, sizeof(sensorReadings));
    
   if (result == ESP_OK) {
     Serial.println("Sent with success");
@@ -107,14 +107,14 @@ void loop() {
   delay(10000);
 }
 void getReadings(){
-  temperature = analogRead(SensorPin);
+  moisture = analogRead(SensorPin);
 }
 
 void updateDisplay(){
   
   // Display Readings in Serial Monitor
   Serial.println("INCOMING READINGS");
-  Serial.print("Temperature: ");
-  Serial.print(incomingReadings.temp);
-  Serial.println(" ºC");
+  Serial.print("moisture: ");
+  Serial.print(incomingReadings.moist);
+  Serial.println("%");
 }
