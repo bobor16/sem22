@@ -4,25 +4,17 @@
 #include <Wire.h>
 
 #include <Arduino.h>
-#include <U8g2lib.h>
 
-#ifdef U8X8_HAVE_HW_SPI
-#include <SPI.h>
-#endif
-
-#define RELAY_PIN 0 // ESP32 pin GIOP27, which connects to the IN pin of relay
-
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE);  // High speed I2C
-
+#define RELAY_PIN 0 // ESP32 pin 0, which connects to the IN pin of relay
 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x84, 0x0D, 0x8E, 0xE4, 0xAB, 0x00};
 
-// Define variables to store BME280 readings to be sent
-float temperature;
+// Define variables to store sensor readings to be sent
+float moisture;
 
 // Define variables to store incoming readings
-float incomingTemp;
+float incomingMoist;
 
 // Variable to store if sending data was successful
 String success;
@@ -30,11 +22,11 @@ String success;
 //Structure example to send data
 //Must match the receiver structure
 typedef struct struct_message {
-    float temp;
+    float moist;
 } struct_message;
 
-// Create a struct_message called BME280Readings to hold sensor readings
-struct_message BME280Readings;
+// Create a struct_message called sensorReadings to hold sensor readings
+struct_message sensorReadings;
 
 // Create a struct_message to hold incoming sensor readings
 struct_message incomingReadings;
@@ -58,7 +50,7 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
   //Serial.print("Bytes received: ");
   //Serial.println(len);
-  incomingTemp = incomingReadings.temp;
+  incomingMoist = incomingReadings.moist;
 }
  
 void setup() {
@@ -102,10 +94,10 @@ void loop() {
   getReadings();
 
   // Set values to send
-  BME280Readings.temp = 11;
+  sensorReadings.moist = 11;
 
   // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &BME280Readings, sizeof(BME280Readings));
+  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &sensorReadings, sizeof(sensorReadings));
    
   if (result == ESP_OK) {
     Serial.println("Sent with success");
@@ -118,25 +110,18 @@ void loop() {
   delay(10000);
 }
 void getReadings(){
-  temperature = 11;
+  moisture = 11;
 
 }
 
 void updateDisplay(){
-  u8g2.clearBuffer();                   // clear the internal memory
-  u8g2.setFont(u8g2_font_ncenB08_tr);   // choose a suitable font
-  u8g2.drawStr(0,10,"Hello World!");    // write something to the internal memory
-  u8g2.sendBuffer();                    // transfer internal memory to the display
-  delay(1000);  
-
-  
   // Display Readings in Serial Monitor
   Serial.println("INCOMING READINGS");
   Serial.print("Moisture: ");
-  Serial.print(incomingReadings.temp);
+  Serial.print(incomingReadings.moist);
   Serial.println("%");
 
-  if(incomingReadings.temp<20){ // Water if moisture is below 20%
+  if(incomingReadings.moist<20){ // Water if moisture is below 20%
     Serial.println("Water time!");
    digitalWrite(RELAY_PIN, LOW);
   } else {
