@@ -4,6 +4,12 @@
 #include <Wire.h>
 #define SensorPin 34
 float sensorValue = 0; 
+
+// Deep sleep
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
+RTC_DATA_ATTR int bootCount = 0;
+
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
 
@@ -51,8 +57,18 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 void setup() {
   // Init Serial Monitor
   Serial.begin(115200);
+  delay(1000); //Take some time to open up the Serial Monitor
+  //Increment boot number and print it every reboot
+  ++bootCount;
+  Serial.println("Boot number: " + String(bootCount));
 
- 
+  //Print the wakeup reason for ESP32
+  print_wakeup_reason();
+
+  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+  Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) +
+  " Seconds");
+  
   // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
 
@@ -78,6 +94,12 @@ void setup() {
   }
   // Register for a callback function that will be called when data is received
   esp_now_register_recv_cb(OnDataRecv);
+delay(100000); //Stay awake for 100 seconds
+    Serial.println("Going to sleep now");
+  delay(1000);
+  Serial.flush(); 
+  esp_deep_sleep_start();
+  Serial.println("This will never be printed");
 }
  
 void loop() {
@@ -117,4 +139,20 @@ void updateDisplay(){
   Serial.print("moisture: ");
   Serial.print(incomingReadings.moist);
   Serial.println("%");
+}
+
+void print_wakeup_reason(){
+  esp_sleep_wakeup_cause_t wakeup_reason;
+
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  switch(wakeup_reason)
+  {
+    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
+    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
+    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
+    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
+    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
+    default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
+  }
 }
