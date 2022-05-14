@@ -7,8 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.xtext.example.mydsl.garden.GardenBed
-import org.xtext.example.mydsl.garden.WaterTank
+import org.xtext.example.mydsl.garden.*
 
 /**
  * Generates code from your model files on save.
@@ -21,30 +20,30 @@ class GardenGenerator extends AbstractGenerator {
 		
 		var i =1 as int;
 		
-		for (e : resource.allContents.toIterable.filter(GardenBed)) {
-                fsa.generateFile(e.name+i + ".ino", e.compileGardenController
-                	
-                )
-                i++
+		for (e : resource.allContents.toIterable.filter(Component)) {
+      		fsa.generateFile(e.name+"_"+i+".ino", e.compile)
+			i++                
         }
-        
-        i=1
-        
-        for (e : resource.allContents.toIterable.filter(WaterTank)) {
-                fsa.generateFile(e.name+i+".ino", e.compileGardenController)
-        }
-        i++
 	}
 	
-	def compileGardenController(WaterTank waterTank)'''
+	def  compile(Component component)'''
+		// ComponentType: «component.name» \n\n
+		«FOR device: component.devices»
+			«device.compile»
+		«ENDFOR»
+	
+	'''
 	#include <esp_now.h>
 	#include <WiFi.h>
-	
 	#include <Wire.h>
-	#define SensorPin 34
-	float sensorValue = 0; 
+	
+	«IF component.devices.filter(MoistureSensor) !== null»
+	    	#define SensorPin 34
+	    	float sensorValue = 0; 
+	«ENDIF» 
 	// REPLACE WITH THE MAC Address of your receiver 
 	uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
+	
 	
 	// Define variables to store BME280 readings to be sent
 	float temperature;
@@ -159,6 +158,231 @@ class GardenGenerator extends AbstractGenerator {
 	}
 	'''
 	
+
+//	def compile(Component model)'''
+//	«FOR devicee: model.devices»
+//	 		«devicee.compile»
+//	«ENDFOR» 
+//	'''
+	def compile(Device device){	
+		val type = device.deviceType
+		switch type{
+			MoistureSensor: 	type.compile
+			WaterPumpActuator: 	type.compile
+			TemperatureSensor: 	type.compile
+			UltraSonicSensor: 	type.compile
+		}
+	}
+	
+	def String compile(MoistureSensor s)'''
+		MoistureBoi
+	'''
+	
+	def String compile(WaterPumpActuator s)'''
+		MoistureBoi
+	'''
+	
+	def String compile(TemperatureSensor s)'''
+		MoistureBoi
+	'''
+	
+	def String compile(UltraSonicSensor s)'''
+		MoistureBoi
+	'''
+}
+
+
+
+
+//pref way
+//	«IF component.devices.contains(Device)»
+//	#define SensorPin 34
+//	float sensorValue = 0; 
+//	«ENDIF»
+       
+//        i=1
+//        
+//        for (e : resource.allContents.toIterable.filter(WaterTank)) {
+//      		fsa.generateFile(e.name+"_"+i+".ino", e.compile)
+//			i++                
+//        }
+        
+       
+        
+
+//		  TODO: Do it like this sometime       ie atm. I jump to WaterTank & other - Want to start from Component  
+//        for (e : resource.allContents.toIterable.filter(Component)) {
+//					// TODO: Randomly gets assigned a ')' that needs to be removed 
+//					// TODO:  Maybe create a GUID instead of int as id
+//                	fsa.generateFile(e.getComponentType.toString+"_"+i+".ino", e.compile)
+//        i++                
+//        }
+
+//	def static dispatch String compileExpression(WaterPump exp)'''
+//	WaterDog
+//	''' 
+//	def static dispatch String compileExpression(MoistureSensor exp)'''
+//	WaterCat
+//	''' 
+//	def compile(WaterPump d
+
+	
+	
+	//«IF component.getDevices().filter(MoistureSensor) !== null   »
+	//#define SensorPin 34
+	//float sensorValue = 0; 
+	//«ENDIF»
+	/*
+	 * 
+	 * 	«IF component.superType.devices   !==null»
+	#define SensorPin 34
+	float sensorValue = 0; 
+	«ENDIF»
+	 * 
+	 */
+	 
+	 /*s
+	def  compile(WaterTank component)'''
+	#include <esp_now.h>
+	#include <WiFi.h>
+	#include <Wire.h>
+	 	
+	#define SensorPin 34
+	float sensorValue = 0; 
+
+	
+	// REPLACE WITH THE MAC Address of your receiver 
+	uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
+	
+	
+	// Define variables to store BME280 readings to be sent
+	float temperature;
+	// Define variables to store incoming readings
+	float incomingTemp;
+	// Variable to store if sending data was successful
+	String success;
+	
+	//Structure example to send data
+	//Must match the receiver structure
+	typedef struct struct_message {
+	    float temp;
+	} struct_message;
+	
+	// Create a struct_message called BME280Readings to hold sensor readings
+	struct_message BME280Readings;
+	
+	// Create a struct_message to hold incoming sensor readings
+	struct_message incomingReadings;
+	
+	esp_now_peer_info_t peerInfo;
+	
+	// Callback when data is sent
+	void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+	  Serial.print("\r\nLast Packet Send Status:\t");
+	  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+	  if (status ==0){
+	    success = "Delivery Success :)";
+	  }
+	  else{
+	    success = "Delivery Fail :(";
+	  }
+	}
+	
+	// Callback when data is received
+	void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+	  memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
+	  Serial.print("Bytes received: ");
+	  Serial.println(len);
+	  incomingTemp = incomingReadings.temp;
+	}
+	 
+	void setup() {
+	  // Init Serial Monitor
+	  Serial.begin(115200);
+	
+	 
+	  // Set device as a Wi-Fi Station
+	  WiFi.mode(WIFI_STA);
+	
+	  // Init ESP-NOW
+	  if (esp_now_init() != ESP_OK) {
+	    Serial.println("Error initializing ESP-NOW");
+	    return;
+	  }
+	
+	  // Once ESPNow is successfully Init, we will register for Send CB to
+	  // get the status of Trasnmitted packet
+	  esp_now_register_send_cb(OnDataSent);
+	  
+	  // Register peer
+	  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+	  peerInfo.channel = 0;  
+	  peerInfo.encrypt = false;
+	  
+	  // Add peer        
+	  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+	    Serial.println("Failed to add peer");
+	    return;
+	  }
+	  // Register for a callback function that will be called when data is received
+	  esp_now_register_recv_cb(OnDataRecv);
+	}
+	 
+	void loop() {
+	  Serial.println("Sensor readings:");
+	  float moisture = analogRead(SensorPin);
+	  moisture = moisture/2300*100;
+	 // Serial.println(moisture/2300*100);
+	   Serial.println(String(moisture, 2) + String("% Moist"));
+	  Serial.println("% Moist");
+	
+	  
+	  getReadings();
+	
+	  // Set values to send
+	  BME280Readings.temp = moisture;
+	
+	  // Send message via ESP-NOW
+	  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &BME280Readings, sizeof(BME280Readings));
+	   
+	  if (result == ESP_OK) {
+	    Serial.println("Sent with success");
+	  }
+	  else {
+	    Serial.println("Error sending the data");
+	  }
+	
+	  delay(10000);
+	}
+	void getReadings(){
+	  temperature = analogRead(SensorPin);
+	}
+	
+	void updateDisplay(){
+	  
+	  // Display Readings in Serial Monitor
+	  Serial.println("INCOMING READINGS");
+	  Serial.print("Temperature: ");
+	  Serial.print(incomingReadings.temp);
+	  Serial.println(" ºC");
+	}
+	'''
+	def compile(GardenBed component)'''
+	'''
+	
+//	def dispatch compile(WaterTank component)'''
+//	'''
+	
+	
+	
+//	//Helper Method
+//	def espCode()'''
+//	
+//	
+//	'''
+//	
+	
+	/*
 		def compileGardenController(GardenBed waterTank)'''
 		#include <esp_now.h>
 		#include <WiFi.h>
@@ -285,4 +509,6 @@ class GardenGenerator extends AbstractGenerator {
 	
 	
 	'''
-}
+
+	*/
+

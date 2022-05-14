@@ -43,7 +43,7 @@ import org.xtext.example.mydsl.services.GardenGrammarAccess;
 
     @Override
     protected String getFirstRuleName() {
-    	return "Domainmodel";
+    	return "MetaModel";
    	}
 
    	@Override
@@ -60,15 +60,15 @@ import org.xtext.example.mydsl.services.GardenGrammarAccess;
     }
 }
 
-// Entry rule entryRuleDomainmodel
-entryRuleDomainmodel returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getDomainmodelRule()); }
-	iv_ruleDomainmodel=ruleDomainmodel
-	{ $current=$iv_ruleDomainmodel.current; }
+// Entry rule entryRuleMetaModel
+entryRuleMetaModel returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getMetaModelRule()); }
+	iv_ruleMetaModel=ruleMetaModel
+	{ $current=$iv_ruleMetaModel.current; }
 	EOF;
 
-// Rule Domainmodel
-ruleDomainmodel returns [EObject current=null]
+// Rule MetaModel
+ruleMetaModel returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -76,24 +76,48 @@ ruleDomainmodel returns [EObject current=null]
 	leaveRule();
 }:
 	(
+		otherlv_0='application'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getMetaModelAccess().getApplicationKeyword_0());
+		}
 		(
-			{
-				newCompositeNode(grammarAccess.getDomainmodelAccess().getElementsComponentParserRuleCall_0());
-			}
-			lv_elements_0_0=ruleComponent
-			{
-				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getDomainmodelRule());
+			(
+				lv_name_1_0=RULE_ID
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getMetaModelAccess().getNameIDTerminalRuleCall_1_0());
 				}
-				add(
-					$current,
-					"elements",
-					lv_elements_0_0,
-					"org.xtext.example.mydsl.Garden.Component");
-				afterParserOrEnumRuleCall();
-			}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getMetaModelRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.ID");
+				}
+			)
 		)
-	)*
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getMetaModelAccess().getComponentsComponentParserRuleCall_2_0());
+				}
+				lv_components_2_0=ruleComponent
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getMetaModelRule());
+					}
+					add(
+						$current,
+						"components",
+						lv_components_2_0,
+						"org.xtext.example.mydsl.Garden.Component");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)*
+	)
 ;
 
 // Entry rule entryRuleComponent
@@ -119,17 +143,17 @@ ruleComponent returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getComponentAccess().getComponentTypeComponentTypeParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getComponentAccess().getNameComponentTypeParserRuleCall_1_0());
 				}
-				lv_componentType_1_0=ruleComponentType
+				lv_name_1_0=ruleComponentType
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getComponentRule());
 					}
 					set(
 						$current,
-						"componentType",
-						lv_componentType_1_0,
+						"name",
+						lv_name_1_0,
 						"org.xtext.example.mydsl.Garden.ComponentType");
 					afterParserOrEnumRuleCall();
 				}
@@ -181,84 +205,49 @@ ruleComponentType returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		{
-			newCompositeNode(grammarAccess.getComponentTypeAccess().getGardenBedParserRuleCall_0());
-		}
-		this_GardenBed_0=ruleGardenBed
-		{
-			$current = $this_GardenBed_0.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getComponentTypeAccess().getWaterTankParserRuleCall_1());
-		}
-		this_WaterTank_1=ruleWaterTank
-		{
-			$current = $this_WaterTank_1.current;
-			afterParserOrEnumRuleCall();
-		}
-	)
-;
-
-// Entry rule entryRuleGardenBed
-entryRuleGardenBed returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getGardenBedRule()); }
-	iv_ruleGardenBed=ruleGardenBed
-	{ $current=$iv_ruleGardenBed.current; }
-	EOF;
-
-// Rule GardenBed
-ruleGardenBed returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
 		(
-			lv_name_0_0='GardenBed'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getGardenBedAccess().getNameGardenBedKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getGardenBedRule());
+			(
+				lv_type_0_0='WaterController'
+				{
+					newLeafNode(lv_type_0_0, grammarAccess.getComponentTypeAccess().getTypeWaterControllerKeyword_0_0());
 				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "GardenBed");
-			}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_0_0, "WaterController");
+				}
+			)
 		)
-	)
-;
-
-// Entry rule entryRuleWaterTank
-entryRuleWaterTank returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getWaterTankRule()); }
-	iv_ruleWaterTank=ruleWaterTank
-	{ $current=$iv_ruleWaterTank.current; }
-	EOF;
-
-// Rule WaterTank
-ruleWaterTank returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
+		    |
 		(
-			lv_name_0_0='WaterTank'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getWaterTankAccess().getNameWaterTankKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getWaterTankRule());
+			(
+				lv_type_1_0='GatewayController'
+				{
+					newLeafNode(lv_type_1_0, grammarAccess.getComponentTypeAccess().getTypeGatewayControllerKeyword_1_0());
 				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "WaterTank");
-			}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_1_0, "GatewayController");
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_type_2_0='GardenController'
+				{
+					newLeafNode(lv_type_2_0, grammarAccess.getComponentTypeAccess().getTypeGardenControllerKeyword_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_2_0, "GardenController");
+				}
+			)
 		)
 	)
 ;
@@ -290,17 +279,17 @@ ruleDevice returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getDeviceAccess().getTypeDeviceTypeParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getDeviceAccess().getDeviceTypeDeviceTypeParserRuleCall_2_0());
 				}
-				lv_type_2_0=ruleDeviceType
+				lv_deviceType_2_0=ruleDeviceType
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getDeviceRule());
 					}
 					set(
 						$current,
-						"type",
-						lv_type_2_0,
+						"deviceType",
+						lv_deviceType_2_0,
 						"org.xtext.example.mydsl.Garden.DeviceType");
 					afterParserOrEnumRuleCall();
 				}
@@ -325,190 +314,100 @@ ruleDeviceType returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		{
-			newCompositeNode(grammarAccess.getDeviceTypeAccess().getTemperatureSensorParserRuleCall_0());
-		}
-		this_TemperatureSensor_0=ruleTemperatureSensor
-		{
-			$current = $this_TemperatureSensor_0.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getDeviceTypeAccess().getMoistureSensorParserRuleCall_1());
-		}
-		this_MoistureSensor_1=ruleMoistureSensor
-		{
-			$current = $this_MoistureSensor_1.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getDeviceTypeAccess().getUltrasonicSensorParserRuleCall_2());
-		}
-		this_UltrasonicSensor_2=ruleUltrasonicSensor
-		{
-			$current = $this_UltrasonicSensor_2.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getDeviceTypeAccess().getWaterPumpParserRuleCall_3());
-		}
-		this_WaterPump_3=ruleWaterPump
-		{
-			$current = $this_WaterPump_3.current;
-			afterParserOrEnumRuleCall();
-		}
-	)
-;
-
-// Entry rule entryRuleTemperatureSensor
-entryRuleTemperatureSensor returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getTemperatureSensorRule()); }
-	iv_ruleTemperatureSensor=ruleTemperatureSensor
-	{ $current=$iv_ruleTemperatureSensor.current; }
-	EOF;
-
-// Rule TemperatureSensor
-ruleTemperatureSensor returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			lv_name_0_0='temperatureSensor'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getTemperatureSensorAccess().getNameTemperatureSensorKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getTemperatureSensorRule());
-				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "temperatureSensor");
-			}
-		)
-	)
-;
-
-// Entry rule entryRuleMoistureSensor
-entryRuleMoistureSensor returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getMoistureSensorRule()); }
-	iv_ruleMoistureSensor=ruleMoistureSensor
-	{ $current=$iv_ruleMoistureSensor.current; }
-	EOF;
-
-// Rule MoistureSensor
-ruleMoistureSensor returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
 		(
 			(
-				lv_name_0_0='moistureSensor'
 				{
-					newLeafNode(lv_name_0_0, grammarAccess.getMoistureSensorAccess().getNameMoistureSensorKeyword_0_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getMoistureSensorRule());
-					}
-					setWithLastConsumed($current, "name", lv_name_0_0, "moistureSensor");
+					$current = forceCreateModelElement(
+						grammarAccess.getDeviceTypeAccess().getMoistureSensorAction_0_0(),
+						$current);
 				}
 			)
-		)
-		(
-			otherlv_1='@'
-			{
-				newLeafNode(otherlv_1, grammarAccess.getMoistureSensorAccess().getCommercialAtKeyword_1_0());
-			}
 			(
 				(
-					lv_threshold_2_0=RULE_INT
+					lv_device_1_0='MoistureSensor'
 					{
-						newLeafNode(lv_threshold_2_0, grammarAccess.getMoistureSensorAccess().getThresholdINTTerminalRuleCall_1_1_0());
+						newLeafNode(lv_device_1_0, grammarAccess.getDeviceTypeAccess().getDeviceMoistureSensorKeyword_0_1_0());
 					}
 					{
 						if ($current==null) {
-							$current = createModelElement(grammarAccess.getMoistureSensorRule());
+							$current = createModelElement(grammarAccess.getDeviceTypeRule());
 						}
-						setWithLastConsumed(
-							$current,
-							"threshold",
-							lv_threshold_2_0,
-							"org.eclipse.xtext.common.Terminals.INT");
+						setWithLastConsumed($current, "device", lv_device_1_0, "MoistureSensor");
 					}
 				)
 			)
-		)?
-	)
-;
-
-// Entry rule entryRuleUltrasonicSensor
-entryRuleUltrasonicSensor returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getUltrasonicSensorRule()); }
-	iv_ruleUltrasonicSensor=ruleUltrasonicSensor
-	{ $current=$iv_ruleUltrasonicSensor.current; }
-	EOF;
-
-// Rule UltrasonicSensor
-ruleUltrasonicSensor returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			lv_name_0_0='ultraSonicSensor'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getUltrasonicSensorAccess().getNameUltraSonicSensorKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getUltrasonicSensorRule());
-				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "ultraSonicSensor");
-			}
 		)
-	)
-;
-
-// Entry rule entryRuleWaterPump
-entryRuleWaterPump returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getWaterPumpRule()); }
-	iv_ruleWaterPump=ruleWaterPump
-	{ $current=$iv_ruleWaterPump.current; }
-	EOF;
-
-// Rule WaterPump
-ruleWaterPump returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
+		    |
 		(
-			lv_name_0_0='waterPump'
-			{
-				newLeafNode(lv_name_0_0, grammarAccess.getWaterPumpAccess().getNameWaterPumpKeyword_0());
-			}
-			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getWaterPumpRule());
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getDeviceTypeAccess().getWaterPumpActuatorAction_1_0(),
+						$current);
 				}
-				setWithLastConsumed($current, "name", lv_name_0_0, "waterPump");
-			}
+			)
+			(
+				(
+					lv_device_3_0='WaterPumpActuator'
+					{
+						newLeafNode(lv_device_3_0, grammarAccess.getDeviceTypeAccess().getDeviceWaterPumpActuatorKeyword_1_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getDeviceTypeRule());
+						}
+						setWithLastConsumed($current, "device", lv_device_3_0, "WaterPumpActuator");
+					}
+				)
+			)
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getDeviceTypeAccess().getTemperatureSensorAction_2_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_device_5_0='TemperatureSensor'
+					{
+						newLeafNode(lv_device_5_0, grammarAccess.getDeviceTypeAccess().getDeviceTemperatureSensorKeyword_2_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getDeviceTypeRule());
+						}
+						setWithLastConsumed($current, "device", lv_device_5_0, "TemperatureSensor");
+					}
+				)
+			)
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getDeviceTypeAccess().getUltraSonicSensorAction_3_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_device_7_0='UltraSonicSensor'
+					{
+						newLeafNode(lv_device_7_0, grammarAccess.getDeviceTypeAccess().getDeviceUltraSonicSensorKeyword_3_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getDeviceTypeRule());
+						}
+						setWithLastConsumed($current, "device", lv_device_7_0, "UltraSonicSensor");
+					}
+				)
+			)
 		)
 	)
 ;

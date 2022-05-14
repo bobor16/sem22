@@ -1,4 +1,11 @@
-component GardenBed{
-	device = moistureSensor@10
-	device = temperatureSensor
+application SmartSustainableSystem
+
+component GardenController{
+	device=MoistureSensor
+	device=WaterPumpActuator
+	device=WaterPumpActuator
+}
+
+component WaterController{
+	device = MoistureSensor
 }

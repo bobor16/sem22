@@ -1,11 +1,12 @@
 #include <esp_now.h>
 #include <WiFi.h>
-
 #include <Wire.h>
+
 #define SensorPin 34
 float sensorValue = 0; 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
+
 
 // Define variables to store BME280 readings to be sent
 float temperature;
@@ -118,7 +119,3 @@ void updateDisplay(){
   Serial.print(incomingReadings.temp);
   Serial.println(" ºC");
 }
-
-	
-	
-	

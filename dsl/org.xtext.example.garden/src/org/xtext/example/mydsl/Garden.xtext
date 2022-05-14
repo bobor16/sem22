@@ -2,58 +2,145 @@ grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
 
 generate garden "http://www.xtext.org/example/mydsl/Garden"
 
+MetaModel:
+    'application' name=ID	
+	components += Component*
+;
+
+
+Component:
+	'component' name=ComponentType '{'
+		devices+=Device*
+	'}'
+;
+
+ComponentType:
+	type='WaterController'|type='GatewayController'|type='GardenController'
+;
+
+Device:
+	'device' '=' deviceType=DeviceType
+;
+
+DeviceType returns Device:
+	{MoistureSensor} 	device='MoistureSensor' 	| 
+	{WaterPumpActuator} device='WaterPumpActuator' 	| 
+	{TemperatureSensor} device='TemperatureSensor' 	| 
+	{UltraSonicSensor} 	device='UltraSonicSensor' 
+;
+
+//
+//Exp returns Expression:
+//	Factor (( {Plus.left=current} '+' | {Minus.left=current}  '-' ) right=Factor)*
+//;
+//
+//Factor returns Expression:
+//	Primary (({Mult.left=current} '*' | {Div.left=current}  '/'  ) right=Primary)*
+//;
+//
+//Primary returns Expression:
+//	{MathNumber} value=INT  |{Paranthesis} '(' exp=Exp')'  |  VariableUse | LetBinding
+//;
+//
+//LetBinding:
+//	'let' name=ID '=' binding=Exp 'in' body=Exp 'end'
+//;
+//
+//Binding:
+//	DeviceBinding | LetBinding
+//;
+//
+//VariableUse:
+//	ref = [Binding]
+//;
+//
+////Function:
+//	'external' name=ID'('argument=Argument?')'
+//;
+//Argument:
+//	type=Type
+//;
+//Type:
+//	typeName=('string'|'INT'|'boolean')
+//;
+
+
+
+
+
+
+
+
+
 
 /*	Design Choices
  *		Each component is automatically fitted with  
  * 
  */
 
-// MetaModel
-Domainmodel:
-    (elements+=Component)*;
-
-// Gardenbed, WaterTank etc. 
-Component:
-	'component' componentType=ComponentType '{'		//Should be unique ? How to - Could also just give it a id afterwards in code generation
-	devices+=Device* 	//actuators + sensors
-'}'
-;
-
-ComponentType:
-	GardenBed | WaterTank	
-;
-
-GardenBed:
-	name='GardenBed'
-;
-
-WaterTank:
-	name='WaterTank'
-	//name=ID
-;
-
-Device:
-	'device' '=' type=DeviceType
-;
-
-
-DeviceType:
-	TemperatureSensor | MoistureSensor | UltrasonicSensor| WaterPump 
-;
-
-
-TemperatureSensor:
-	name='temperatureSensor'
-; 
-
-MoistureSensor:
-	name='moistureSensor' ('@'threshold=INT)?
-; 
-
-UltrasonicSensor:
-	name='ultraSonicSensor'
-;
-
-WaterPump:
-	name='waterPump'
-;
+//// MetaModel
+//Metamodel:
+//    (components+=Component)*
+//;
+//
+//Component:
+//	'component' componentType=ComponentType '{'
+//		devices+=Device*
+//	'}'
+//;
+//
+//ComponentType:
+//	type='WaterTankController'|type='GatewayController'|type='GardenBedController'
+//;
+//
+//Device:
+//	'device' '=' deviceType=DeviceType
+//;
+//
+//DeviceType returns Device:
+//	{WaterPump} 'WaterPump'|{MoistureSensor} type='MoistureSensor'|{UltraSonicSensor} type='UltraSonicSensor'|{TemperatureSensor} type='TemperatureSensor'
+//;
+//  
+////
+////// Gardenbed, WaterTank etc. 
+////Component:
+////	'component' componentType=ComponentType 
+////;
+//
+//
+//// 	
+////		'{'		//Should be unique ? How to - Could also just give it a id afterwards in code generation
+////	devices+=Device* 	//actuators + sensors
+////'}'
+////;
+////
+////ComponentType:
+////	('GardenBed'|  'WaterTank') 
+////;
+////
+////
+////Device:
+////	'device' '=' type=DeviceType
+////;
+////
+////
+////DeviceType:
+////	TemperatureSensor | MoistureSensor | UltrasonicSensor| WaterPump 
+////;
+////
+////
+////TemperatureSensor:
+////	name='temperatureSensor'
+////; 
+//
+//MoistureSensor:
+//	name='moistureSensor' ('@'threshold=INT)?
+//; 
+//
+//UltrasonicSensor:
+//	name='ultraSonicSensor'
+//;
+//
+//WaterPump:
+//	name='waterPump'
+//;

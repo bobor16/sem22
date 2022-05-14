@@ -40,7 +40,7 @@ class DomainmodelGenerator extends AbstractGenerator {
     private def compile(Feature f) '''
         private «f.type.fullyQualifiedName» «f.name»;
         
-        public «f.type.fullyQualifiedName» get«f.name.toFirstUpper»() {
+        public «f.type.fullyQualifiedName» get«f.name.toFirstUpper»() { 
             return «f.name»;
         }
         
