@@ -58,7 +58,6 @@ void setup() {
   pinMode(RELAY_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, HIGH);
 
-  u8g2.begin();
   
   // Init Serial Monitor
   Serial.begin(115200);
