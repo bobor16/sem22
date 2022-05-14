@@ -1,11 +1,9 @@
 application SmartSustainableSystem
 
 component GardenController{
-	device=MoistureSensor
-	device=WaterPumpActuator
-	device=WaterPumpActuator
-}
-
-component WaterController{
-	device = MoistureSensor
+	address="0x10", "0x97", "0xBD", "0xD5", "0xB2", "0x73"
+	
+	device = MoistureSensor@input#1 
+	device = TemperatureSensor@input#2
+	device = TemperatureSensor@input#23  
 }

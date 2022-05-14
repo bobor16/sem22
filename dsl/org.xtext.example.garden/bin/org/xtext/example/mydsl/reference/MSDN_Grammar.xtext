@@ -2,13 +2,11 @@ grammar org.xtext.example.mydsl.Garden with org.eclipse.xtext.common.Terminals
 
 generate garden "http://www.xtext.org/example/mydsl/Garden"
 
-
  MathExp:
 	'program' name=ID
 	variables += VarBinding*	// Called varBindings in guide
 	functions+=Function*
 ;
-
 
 VarBinding:
 	'var' name=ID '=' expression=Exp 
@@ -47,7 +45,5 @@ Argument:
 Type:
 	typeName=('string'|'INT'|'boolean')
 ;
-
-
 //AttributeType:
 //elementType=ElementType (array ?='[' (length=INT)? ']')?;

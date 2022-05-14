@@ -163,12 +163,148 @@ ruleComponent returns [EObject current=null]
 		{
 			newLeafNode(otherlv_2, grammarAccess.getComponentAccess().getLeftCurlyBracketKeyword_2());
 		}
+		otherlv_3='address'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getComponentAccess().getAddressKeyword_3());
+		}
+		otherlv_4='='
+		{
+			newLeafNode(otherlv_4, grammarAccess.getComponentAccess().getEqualsSignKeyword_4());
+		}
+		(
+			(
+				lv_byte01_5_0=RULE_STRING
+				{
+					newLeafNode(lv_byte01_5_0, grammarAccess.getComponentAccess().getByte01STRINGTerminalRuleCall_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte01",
+						lv_byte01_5_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_6=','
+		{
+			newLeafNode(otherlv_6, grammarAccess.getComponentAccess().getCommaKeyword_6());
+		}
+		(
+			(
+				lv_byte02_7_0=RULE_STRING
+				{
+					newLeafNode(lv_byte02_7_0, grammarAccess.getComponentAccess().getByte02STRINGTerminalRuleCall_7_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte02",
+						lv_byte02_7_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_8=','
+		{
+			newLeafNode(otherlv_8, grammarAccess.getComponentAccess().getCommaKeyword_8());
+		}
+		(
+			(
+				lv_byte03_9_0=RULE_STRING
+				{
+					newLeafNode(lv_byte03_9_0, grammarAccess.getComponentAccess().getByte03STRINGTerminalRuleCall_9_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte03",
+						lv_byte03_9_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_10=','
+		{
+			newLeafNode(otherlv_10, grammarAccess.getComponentAccess().getCommaKeyword_10());
+		}
+		(
+			(
+				lv_byte04_11_0=RULE_STRING
+				{
+					newLeafNode(lv_byte04_11_0, grammarAccess.getComponentAccess().getByte04STRINGTerminalRuleCall_11_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte04",
+						lv_byte04_11_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_12=','
+		{
+			newLeafNode(otherlv_12, grammarAccess.getComponentAccess().getCommaKeyword_12());
+		}
+		(
+			(
+				lv_byte05_13_0=RULE_STRING
+				{
+					newLeafNode(lv_byte05_13_0, grammarAccess.getComponentAccess().getByte05STRINGTerminalRuleCall_13_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte05",
+						lv_byte05_13_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_14=','
+		{
+			newLeafNode(otherlv_14, grammarAccess.getComponentAccess().getCommaKeyword_14());
+		}
+		(
+			(
+				lv_byte06_15_0=RULE_STRING
+				{
+					newLeafNode(lv_byte06_15_0, grammarAccess.getComponentAccess().getByte06STRINGTerminalRuleCall_15_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getComponentRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"byte06",
+						lv_byte06_15_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getComponentAccess().getDevicesDeviceParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getComponentAccess().getDevicesDeviceParserRuleCall_16_0());
 				}
-				lv_devices_3_0=ruleDevice
+				lv_devices_16_0=ruleDevice
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getComponentRule());
@@ -176,15 +312,15 @@ ruleComponent returns [EObject current=null]
 					add(
 						$current,
 						"devices",
-						lv_devices_3_0,
+						lv_devices_16_0,
 						"org.xtext.example.mydsl.Garden.Device");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-		otherlv_4='}'
+		otherlv_17='}'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_4());
+			newLeafNode(otherlv_17, grammarAccess.getComponentAccess().getRightCurlyBracketKeyword_17());
 		}
 	)
 ;
@@ -295,6 +431,34 @@ ruleDevice returns [EObject current=null]
 				}
 			)
 		)
+		(
+			otherlv_3='@input'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getDeviceAccess().getInputKeyword_3_0());
+			}
+			otherlv_4='#'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getDeviceAccess().getNumberSignKeyword_3_1());
+			}
+			(
+				(
+					lv_inputPin_5_0=RULE_INT
+					{
+						newLeafNode(lv_inputPin_5_0, grammarAccess.getDeviceAccess().getInputPinINTTerminalRuleCall_3_2_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getDeviceRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"inputPin",
+							lv_inputPin_5_0,
+							"org.eclipse.xtext.common.Terminals.INT");
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -324,15 +488,15 @@ ruleDeviceType returns [EObject current=null]
 			)
 			(
 				(
-					lv_device_1_0='MoistureSensor'
+					lv_name_1_0='MoistureSensor'
 					{
-						newLeafNode(lv_device_1_0, grammarAccess.getDeviceTypeAccess().getDeviceMoistureSensorKeyword_0_1_0());
+						newLeafNode(lv_name_1_0, grammarAccess.getDeviceTypeAccess().getNameMoistureSensorKeyword_0_1_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getDeviceTypeRule());
 						}
-						setWithLastConsumed($current, "device", lv_device_1_0, "MoistureSensor");
+						setWithLastConsumed($current, "name", lv_name_1_0, "MoistureSensor");
 					}
 				)
 			)
@@ -348,15 +512,15 @@ ruleDeviceType returns [EObject current=null]
 			)
 			(
 				(
-					lv_device_3_0='WaterPumpActuator'
+					lv_name_3_0='WaterPumpActuator'
 					{
-						newLeafNode(lv_device_3_0, grammarAccess.getDeviceTypeAccess().getDeviceWaterPumpActuatorKeyword_1_1_0());
+						newLeafNode(lv_name_3_0, grammarAccess.getDeviceTypeAccess().getNameWaterPumpActuatorKeyword_1_1_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getDeviceTypeRule());
 						}
-						setWithLastConsumed($current, "device", lv_device_3_0, "WaterPumpActuator");
+						setWithLastConsumed($current, "name", lv_name_3_0, "WaterPumpActuator");
 					}
 				)
 			)
@@ -372,15 +536,15 @@ ruleDeviceType returns [EObject current=null]
 			)
 			(
 				(
-					lv_device_5_0='TemperatureSensor'
+					lv_name_5_0='TemperatureSensor'
 					{
-						newLeafNode(lv_device_5_0, grammarAccess.getDeviceTypeAccess().getDeviceTemperatureSensorKeyword_2_1_0());
+						newLeafNode(lv_name_5_0, grammarAccess.getDeviceTypeAccess().getNameTemperatureSensorKeyword_2_1_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getDeviceTypeRule());
 						}
-						setWithLastConsumed($current, "device", lv_device_5_0, "TemperatureSensor");
+						setWithLastConsumed($current, "name", lv_name_5_0, "TemperatureSensor");
 					}
 				)
 			)
@@ -396,15 +560,15 @@ ruleDeviceType returns [EObject current=null]
 			)
 			(
 				(
-					lv_device_7_0='UltraSonicSensor'
+					lv_name_7_0='UltraSonicSensor'
 					{
-						newLeafNode(lv_device_7_0, grammarAccess.getDeviceTypeAccess().getDeviceUltraSonicSensorKeyword_3_1_0());
+						newLeafNode(lv_name_7_0, grammarAccess.getDeviceTypeAccess().getNameUltraSonicSensorKeyword_3_1_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getDeviceTypeRule());
 						}
-						setWithLastConsumed($current, "device", lv_device_7_0, "UltraSonicSensor");
+						setWithLastConsumed($current, "name", lv_name_7_0, "UltraSonicSensor");
 					}
 				)
 			)

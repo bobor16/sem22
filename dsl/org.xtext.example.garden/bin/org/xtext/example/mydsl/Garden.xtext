@@ -7,9 +7,9 @@ MetaModel:
 	components += Component*
 ;
 
-
 Component:
 	'component' name=ComponentType '{'
+		'address' '=' byte01=STRING','byte02=STRING','byte03=STRING','byte04=STRING','byte05=STRING','byte06=STRING //TODO
 		devices+=Device*
 	'}'
 ;
@@ -19,14 +19,14 @@ ComponentType:
 ;
 
 Device:
-	'device' '=' deviceType=DeviceType
+	'device' '=' deviceType=DeviceType('@input' '#'inputPin=INT)?
 ;
 
 DeviceType returns Device:
-	{MoistureSensor} 	device='MoistureSensor' 	| 
-	{WaterPumpActuator} device='WaterPumpActuator' 	| 
-	{TemperatureSensor} device='TemperatureSensor' 	| 
-	{UltraSonicSensor} 	device='UltraSonicSensor' 
+	{MoistureSensor} 	name='MoistureSensor' 		| 
+	{WaterPumpActuator} name='WaterPumpActuator' 	| 
+	{TemperatureSensor} name='TemperatureSensor' 	| 
+	{UltraSonicSensor} 	name='UltraSonicSensor' 
 ;
 
 //
