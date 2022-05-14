@@ -9,13 +9,14 @@ MetaModel:
 
 Component:
 	'component' name=ComponentType '{'
+		('threshold' '=' threshold=INT)?
 		'address' '=' byte01=STRING','byte02=STRING','byte03=STRING','byte04=STRING','byte05=STRING','byte06=STRING //TODO
 		devices+=Device*
 	'}'
 ;
 
 ComponentType:
-	type='WaterController'|type='GatewayController'|type='GardenController'
+	type='WaterController'|type='GatewayController'|type='GardenController' 
 ;
 
 Device:
