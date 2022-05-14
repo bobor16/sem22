@@ -8,38 +8,30 @@
 	
 // Define variables to store BME280 readings to be sent
 // Define variables to store incoming readings
-#DEFINE MoistureSensorInputPin 0
+#DEFINE MoistureSensorInputPin 1
 float incomingMoistureSensor;
 
-#DEFINE TemperatureSensorInputPin 0
+#DEFINE TemperatureSensorInputPin 2
 float incomingTemperatureSensor;
 
-#DEFINE TemperatureSensorInputPin 0
+#DEFINE TemperatureSensorInputPin 23
 float incomingTemperatureSensor;
 
  
 //Structure example to send data
 //Must match the receiver structure
 typedef struct struct_message {
-float MoistureSensor; float TemperatureSensor; float TemperatureSensor; 
+float MoistureSensor;     
+float TemperatureSensor;     
+float TemperatureSensor;     
 } struct_message;
-	
-	
-	
-	
-	
-	
-	
-	
+
 // Variable to store if sending data was successful
 String success;
 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x10, 0x97,0xBD,0xD5, 0xB2, 0x73};
-		
-		
 
-	
 // Create a struct_message called BME280Readings to hold sensor readings
 struct_message BME280Readings;
 	

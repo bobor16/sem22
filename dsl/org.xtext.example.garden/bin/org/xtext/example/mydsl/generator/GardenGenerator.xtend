@@ -46,7 +46,7 @@ class GardenGenerator extends AbstractGenerator {
 // Define variables to store BME280 readings to be sent
 // Define variables to store incoming readings
 «FOR device: component.devices»
-#DEFINE «device.deviceType.name»InputPin «device.deviceType.inputPin»
+#DEFINE «device.deviceType.name»InputPin «device.inputPin»
 float incoming«device.deviceType.name»;
 
 ««« 	float outgoing«device.deviceType.name»; «««« TODO:Write toFirstUpper
@@ -56,7 +56,8 @@ float incoming«device.deviceType.name»;
 //Must match the receiver structure
 typedef struct struct_message {
 «FOR device: component.devices»
-float «device.deviceType.name»; «««« TODO:Write toFirstUpper 	    
+float «device.deviceType.name»; «««« TODO:Write toFirstUpper 	
+    
 «ENDFOR»
 } struct_message;
 
