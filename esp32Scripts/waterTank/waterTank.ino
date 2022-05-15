@@ -6,12 +6,16 @@
 #include <Arduino.h>
 
 #define RELAY_PIN 0 // ESP32 pin 0, which connects to the IN pin of relay
+#define echoPin 5 // attach pin D2 Arduino to pin Echo of HC-SR04
+#define trigPin 18 //attach pin D3 Arduino to pin Trig of HC-SR04
 
 // REPLACE WITH THE MAC Address of your receiver 
 uint8_t broadcastAddress[] = {0x84, 0x0D, 0x8E, 0xE4, 0xAB, 0x00};
 
 // Define variables to store sensor readings to be sent
 float moisture;
+long duration; // variable for the duration of sound wave travel
+int distance; // variable for the distance measurement
 
 // Define variables to store incoming readings
 float incomingMoist;
@@ -54,7 +58,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 }
  
 void setup() {
-  
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
+  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
   pinMode(RELAY_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, HIGH);
 
@@ -90,6 +95,23 @@ void setup() {
 }
  
 void loop() {
+  // Clears the trigPin condition
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  // Displays the distance on the Serial Monitor
+  Serial.print("ESP Water tank readings");
+  Serial.print('\n');
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
   getReadings();
 
   // Set values to send
@@ -99,12 +121,12 @@ void loop() {
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &sensorReadings, sizeof(sensorReadings));
    
   if (result == ESP_OK) {
-    Serial.println("Sent with success");
+    //Serial.println("Sent with success");
   }
   else {
     Serial.println("Error sending the data");
   }
-  updateDisplay();
+  handlePump();
 
   delay(10000);
 }
@@ -113,14 +135,14 @@ void getReadings(){
 
 }
 
-void updateDisplay(){
+void handlePump(){
   // Display Readings in Serial Monitor
-  Serial.println("INCOMING READINGS");
+  Serial.println("ESP Garden bed readings");
   Serial.print("Moisture: ");
   Serial.print(incomingReadings.moist);
   Serial.println("%");
 
-  if(incomingReadings.moist<20){ // Water if moisture is below 20%
+  if(incomingReadings.moist<20 && distance<13){ // Water if moisture is below 20% & distance is above 13 CM which means the water container is empty
     Serial.println("Water time!");
    digitalWrite(RELAY_PIN, LOW);
   } else {

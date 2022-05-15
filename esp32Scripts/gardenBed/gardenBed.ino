@@ -12,6 +12,7 @@ uint8_t broadcastAddress[] = {0x10, 0x97, 0xBD, 0xD5, 0xB2, 0x70};
 float moisture;
 // Define variables to store incoming readings
 float incomingmoist;
+
 // Variable to store if sending data was successful
 String success;
 
@@ -19,6 +20,7 @@ String success;
 //Must match the receiver structure
 typedef struct struct_message {
     float moist;
+
 } struct_message;
 
 // Create a struct_message called sensorReadings to hold sensor readings
@@ -88,7 +90,6 @@ void loop() {
   moisture = moisture/2500*100;
  // Serial.println(moisture/2300*100);
    Serial.println(String(moisture, 2) + String("% Moist"));
-  Serial.println("% Moist");
 
   
   getReadings();
@@ -100,7 +101,7 @@ void loop() {
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &sensorReadings, sizeof(sensorReadings));
    
   if (result == ESP_OK) {
-    Serial.println("Sent with success");
+   // Serial.println("Sent with success");
   }
   else {
     Serial.println("Error sending the data");
